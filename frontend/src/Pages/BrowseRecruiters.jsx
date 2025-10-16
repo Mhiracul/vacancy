@@ -16,7 +16,7 @@ const BrowseRecruiters = () => {
 
   const fetchRecruiters = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/candidates/rec");
+      const res = await axios.get(`${BASE_URL}/candidates/rec`);
       setRecruiters(res.data.data || []);
     } catch (err) {
       console.error(err);

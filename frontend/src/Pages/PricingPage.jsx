@@ -4,16 +4,14 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
+import BASE_URL from "../config";
 
 const PricingPage = () => {
   const handlePaystackPayment = async () => {
     try {
-      const res = await axios.post(
-        `http://localhost:5000/api/user/payment/initialize`,
-        {
-          amount: 300 * 100, // kobo
-        }
-      );
+      const res = await axios.post(`${BASE_URL}/user/payment/initialize`, {
+        amount: 300 * 100, // kobo
+      });
       const { authorization_url } = res.data;
 
       window.location.href = authorization_url;

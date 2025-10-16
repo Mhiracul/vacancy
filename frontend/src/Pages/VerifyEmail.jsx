@@ -19,13 +19,10 @@ const VerifyEmail = () => {
 
     setLoading(true);
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/recruiter/verify-email",
-        {
-          email,
-          code,
-        }
-      );
+      const res = await axios.post(`${BASE_URL}/recruiter/verify-email`, {
+        email,
+        code,
+      });
 
       toast.success(res.data.message);
 

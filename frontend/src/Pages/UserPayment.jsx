@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader2, ShieldCheck } from "lucide-react";
+import BASE_URL from "../config";
 
 const UserPayment = () => {
   const [loading, setLoading] = useState(false);
@@ -18,14 +19,11 @@ const UserPayment = () => {
     const checkPayment = async () => {
       if (!user?._id) return;
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/user/status/${user._id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const res = await axios.get(`${BASE_URL}/user/status/${user._id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         // Backend returns paymentStatus = "success"
         if (res.data.hasPaid && res.data.paymentStatus === "success") {
           setPaid(true);
@@ -44,7 +42,7 @@ const UserPayment = () => {
     setLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/user/initiate",
+        `${BASE_URL}/user/initiate`,
         { email: user.email, amount: 1500 },
         { headers: { Authorization: `Bearer ${token}` } }
       );

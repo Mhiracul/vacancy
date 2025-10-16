@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Check, MapPin, DollarSign } from "lucide-react";
+import BASE_URL from "../config";
 
 const AppliedJobs = () => {
   const [appliedJobs, setAppliedJobs] = useState([]);
@@ -10,12 +11,9 @@ const AppliedJobs = () => {
     const fetchAppliedJobs = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(
-          "http://localhost:5000/api/user/jobs/applied",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await axios.get(`${BASE_URL}//user/jobs/applied`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setAppliedJobs(res.data || []);
       } catch (error) {
         console.error("Error fetching applied jobs:", error);

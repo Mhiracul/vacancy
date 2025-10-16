@@ -17,6 +17,7 @@ import { JobsContext } from "../context/jobContext";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import BASE_URL from "../config";
 
 const RecruiterLogin = () => {
   const [state, setState] = useState("Login");
@@ -62,11 +63,9 @@ const RecruiterLogin = () => {
         phone: repData.phone,
       };
 
-      await axios.post(
-        "http://localhost:5000/api/recruiter/register",
-        payload,
-        { headers: { "Content-Type": "application/json" } }
-      );
+      await axios.post(`${BASE_URL}/recruiter/register`, payload, {
+        headers: { "Content-Type": "application/json" },
+      });
 
       toast.success("🎉 Registration successful!");
 
@@ -109,10 +108,10 @@ const RecruiterLogin = () => {
     }
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/recruiter/login",
-        { email: workEmail, password }
-      );
+      const res = await axios.post(`${BASE_URL}/recruiter/login`, {
+        email: workEmail,
+        password,
+      });
 
       const { token, recruiter } = res.data;
 

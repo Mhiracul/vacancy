@@ -14,6 +14,7 @@ import { toast } from "react-hot-toast";
 import { JobsContext } from "../context/jobContext";
 import Money from "../assets/money.svg";
 import moment from "moment";
+import BASE_URL from "../config";
 
 const FavoriteJobs = () => {
   const [favorites, setFavorites] = useState([]);
@@ -33,10 +34,9 @@ const FavoriteJobs = () => {
           return;
         }
 
-        const res = await axios.get(
-          "http://localhost:5000/api/user/jobs/favorites",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const res = await axios.get(`${BASE_URL}/user/jobs/favorites`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         setFavorites(res.data || []);
 
@@ -71,7 +71,7 @@ const FavoriteJobs = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/user/jobs/favorites/toggle",
+        `${BASE_URL}/user/jobs/favorites/toggle`,
         { jobId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -106,7 +106,7 @@ const FavoriteJobs = () => {
     try {
       setApplying(true);
       const res = await axios.post(
-        `http://localhost:5000/api/user/jobs/${jobId}/apply`,
+        `${BASE_URL}/user/jobs/${jobId}/apply`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

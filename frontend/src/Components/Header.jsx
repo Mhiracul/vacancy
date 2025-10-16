@@ -33,7 +33,7 @@ function Header() {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/auth/logout",
+        `${BASE_URL}/auth/logout`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

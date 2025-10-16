@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader2, ShieldCheck } from "lucide-react";
+import BASE_URL from "../config";
 
 const RecruiterPayment = () => {
   const [loading, setLoading] = useState(false);
@@ -21,7 +22,7 @@ const RecruiterPayment = () => {
       if (!user?._id) return;
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/payment/recruiter/status/${user._id}`,
+          `${BASE_URL}/payment/recruiter/status/${user._id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -48,7 +49,7 @@ const RecruiterPayment = () => {
     setLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/payment/recruiter/initiate",
+        `${BASE_URL}/payment/recruiter/initiate`,
         {
           email: user.email,
           amount: 3000, // in Naira

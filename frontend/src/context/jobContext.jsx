@@ -1,6 +1,7 @@
 // jobContext.jsx
 import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import BASE_URL from "../config";
 
 export const JobsContext = createContext();
 
@@ -18,7 +19,7 @@ export const JobsContextProvider = (props) => {
 
   const fetchJobs = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/jobs/all");
+      const res = await axios.get(`${BASE_URL}/jobs/all`);
       setJobs(res.data.jobs);
     } catch (error) {
       console.error("Error fetching jobs:", error);
@@ -33,7 +34,7 @@ export const JobsContextProvider = (props) => {
     if (!token) return;
 
     try {
-      const res = await axios.get("http://localhost:5000/api/auth/profile", {
+      const res = await axios.get(`${BASE_URL}/auth/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(res.data.user);

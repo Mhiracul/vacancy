@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import { Loader2, CheckCircle, XCircle } from "lucide-react";
+import BASE_URL from "../config";
 
 const PaymentVerify = () => {
   const location = useLocation();
@@ -26,7 +27,7 @@ const PaymentVerify = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          `http://localhost:5000/api/user/payment/verify/${reference}`,
+          `${BASE_URL}/user/payment/verify/${reference}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -35,7 +36,7 @@ const PaymentVerify = () => {
           toast.success(res.data.message);
 
           // Refresh user info to update hasPaid
-          const userRes = await axios.get("http://localhost:5000/api/user/me", {
+          const userRes = await axios.get(`${BASE_URL}/user/me`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           setUser(userRes.data.user);

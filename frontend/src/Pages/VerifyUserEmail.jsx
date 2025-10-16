@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Logo from "../assets/Logoo.svg";
 import { ArrowRight } from "lucide-react";
+import BASE_URL from "../config";
 
 const VerifyUserEmail = () => {
   const [code, setCode] = useState("");
@@ -18,13 +19,10 @@ const VerifyUserEmail = () => {
 
     setLoading(true);
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/user/verify-email",
-        {
-          email,
-          code,
-        }
-      );
+      const res = await axios.post(`${BASE_URL}/user/verify-email`, {
+        email,
+        code,
+      });
 
       toast.success(res.data.message);
 

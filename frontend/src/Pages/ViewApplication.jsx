@@ -23,6 +23,7 @@ import {
   BookOpen,
   Mail,
 } from "lucide-react";
+import BASE_URL from "../config";
 
 const ViewApplication = () => {
   const [applications, setApplications] = useState([]);
@@ -35,7 +36,7 @@ const ViewApplication = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        "http://localhost:5000/api/jobs/applications/recruiter",
+        `${BASE_URL}/jobs/applications/recruiter`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -64,7 +65,7 @@ const ViewApplication = () => {
   const handleApplicationAction = async (applicationId, action) => {
     try {
       const { data } = await axios.patch(
-        `http://localhost:5000/api/jobs/applications/${applicationId}`,
+        `${BASE_URL}/jobs/applications/${applicationId}`,
         { action },
         {
           headers: {

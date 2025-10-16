@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Heart } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import BASE_URL from "../config";
 
 const JobCard = ({ job }) => {
   const navigate = useNavigate();
@@ -14,10 +15,9 @@ const JobCard = ({ job }) => {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const res = await axios.get(
-          "http://localhost:5000/api/user/jobs/favorites",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const res = await axios.get(`${BASE_URL}/user/jobs/favorites`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         const favorites = res.data || [];
         const isFav = favorites.some((fav) => fav._id === job._id);
@@ -40,7 +40,7 @@ const JobCard = ({ job }) => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/user/jobs/favorites/toggle",
+        `${BASE_URL}/user/jobs/favorites/toggle`,
         { jobId: job._id },
         { headers: { Authorization: `Bearer ${token}` } }
       );

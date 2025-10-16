@@ -11,6 +11,7 @@ import {
   FileText,
   Users, // add this
 } from "lucide-react";
+import BASE_URL from "../config";
 
 const RecruiterSettings = () => {
   const [recruiter, setRecruiter] = useState(null);
@@ -63,15 +64,11 @@ const RecruiterSettings = () => {
         address: formData.address,
       };
 
-      const res = await axios.put(
-        "http://localhost:5000/api/recruiter/settings",
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axios.put(`${BASE_URL}/recruiter/settings`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const updatedRecruiter = { ...recruiter, ...res.data.recruiter };
       localStorage.setItem("user", JSON.stringify(updatedRecruiter));

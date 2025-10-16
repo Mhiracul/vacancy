@@ -14,6 +14,7 @@ import axios from "axios";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import FineSelect from "../context/FineSelect";
+import BASE_URL from "../config";
 
 const ApplyJob = () => {
   const { id } = useParams();
@@ -64,15 +65,12 @@ const ApplyJob = () => {
     }
 
     try {
-      const res = await axios.get(
-        `http://localhost:5000/api/user/status/${user._id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get(`${BASE_URL}/user/status/${user._id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        withCredentials: true,
+      });
 
       // Use the values from your backend
       const { hasPaid, paymentStatus } = res.data;
@@ -118,7 +116,7 @@ const ApplyJob = () => {
     try {
       setApplying(true);
       const res = await axios.post(
-        `http://localhost:5000/api/user/jobs/${id}/apply`,
+        `${BASE_URL}/user/jobs/${id}/apply`,
         {
           resume: selectedResume, // still the URL
           resumeId: selectedResumeId, // 👈 new field for Cloudinary public_id

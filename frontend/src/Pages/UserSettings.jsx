@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { JobsContext } from "../context/jobContext";
 import FineSelect from "../context/FineSelect";
+import BASE_URL from "../config";
 
 const UserSettings = () => {
   const [userData, setUserData] = useState({});
@@ -51,7 +52,7 @@ const UserSettings = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/upload-profile",
+        `${BASE_URL}/auth/upload-profile`,
         formData,
         {
           headers: {
@@ -76,7 +77,7 @@ const UserSettings = () => {
   const handleDelete = async (resumeId) => {
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/auth/delete-resume/${resumeId}`,
+        `${BASE_URL}/auth/delete-resume/${resumeId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -98,7 +99,7 @@ const UserSettings = () => {
   useEffect(() => {
     const fetchUserSettings = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/auth/settings", {
+        const res = await axios.get(`${BASE_URL}/auth/settings`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log("📄 User settings fetched:", res.data);
@@ -133,16 +134,12 @@ const UserSettings = () => {
     formData.append("file", file);
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/upload-resume",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const res = await axios.post(`${BASE_URL}/auth/upload-resume`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (res.data.success) {
         // ✅ Update user context with new resumes
@@ -171,13 +168,9 @@ const UserSettings = () => {
 
   const handleSaveChanges = async () => {
     try {
-      const res = await axios.put(
-        "http://localhost:5000/api/auth/settings",
-        userData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await axios.put(`${BASE_URL}/auth/settings`, userData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       toast.success("Settings updated successfully!");
       setUserData(res.data.user);
@@ -190,7 +183,7 @@ const UserSettings = () => {
   const handlePasswordChange = async () => {
     try {
       const res = await axios.put(
-        "http://localhost:5000/api/auth/change-password",
+        `${BASE_URL}/auth/change-password`,
         { currentPassword, newPassword, confirmPassword },
         {
           headers: { Authorization: `Bearer ${token}` },

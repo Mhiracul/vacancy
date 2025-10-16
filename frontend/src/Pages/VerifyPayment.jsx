@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader2, ShieldCheck, XCircle } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import BASE_URL from "../config";
 
 const VerifyPayment = () => {
   const [loading, setLoading] = useState(true);
@@ -26,7 +27,7 @@ const VerifyPayment = () => {
         const token = localStorage.getItem("token");
 
         const res = await axios.get(
-          `http://localhost:5000/api/payment/recruiter/verify?recruiterId=${recruiterId}&reference=${reference}`,
+          `${BASE_URL}/payment/recruiter/verify?recruiterId=${recruiterId}&reference=${reference}`,
           {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true,

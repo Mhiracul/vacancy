@@ -4,6 +4,7 @@ import "react-quill-new/dist/quill.snow.css";
 import { Loader2 } from "lucide-react";
 import Swal from "sweetalert2";
 import FineSelect from "../context/FineSelect";
+import BASE_URL from "../config";
 
 const AddJob = () => {
   const [title, setTitle] = useState("");
@@ -263,7 +264,7 @@ const AddJob = () => {
 
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `http://localhost:5000/api/payment/recruiter/status/${userData._id}`,
+          `${BASE_URL}/payment/recruiter/status/${userData._id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const data = await res.json();
@@ -304,7 +305,7 @@ const AddJob = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/jobs/add", {
+      const res = await fetch(`${BASE_URL}/jobs/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

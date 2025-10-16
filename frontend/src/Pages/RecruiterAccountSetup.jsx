@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import Header from "../Components/Header";
 import FineSelect from "../context/FineSelect";
 import Logo from "../assets/Logoo.svg";
+import BASE_URL from "../config";
 
 const RecruiterAccountSetup = () => {
   const [step, setStep] = useState(1);
@@ -56,7 +57,7 @@ const RecruiterAccountSetup = () => {
     });
 
     try {
-      const res = await fetch("http://localhost:5000/api/recruiter/setup", {
+      const res = await fetch(`${BASE_URL}/recruiter/setup`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

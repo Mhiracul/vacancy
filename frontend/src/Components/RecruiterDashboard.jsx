@@ -16,6 +16,7 @@ import {
   UserPlus,
   Loader2,
 } from "lucide-react";
+import BASE_URL from "../config";
 
 const RecruiterDashboard = () => {
   const [totalJobs, setTotalJobs] = useState(0);
@@ -26,12 +27,9 @@ const RecruiterDashboard = () => {
     const fetchTotalJobs = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(
-          "http://localhost:5000/api/jobs/recruiter/total",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await axios.get(`${BASE_URL}/jobs/recruiter/total`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setTotalJobs(res.data.total || 0);
       } catch (error) {
         console.error("Error fetching total jobs:", error);

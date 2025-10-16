@@ -4,6 +4,7 @@ import Header from "../Components/Header";
 import { Search, MapPin } from "lucide-react";
 import CandidateModal from "../Components/CandidateModal";
 import Footer from "../Components/Footer";
+import BASE_URL from "../config";
 
 const BrowseCandidates = () => {
   const [candidates, setCandidates] = useState([]);
@@ -21,7 +22,7 @@ const BrowseCandidates = () => {
 
   const fetchCandidates = async () => {
     const { gender, location, search } = filters;
-    const res = await axios.get("http://localhost:5000/api/candidates", {
+    const res = await axios.get(`${BASE_URL}/candidates`, {
       params: { gender, location, search },
     });
     setCandidates(res.data.data || []); // 👈 access the actual array

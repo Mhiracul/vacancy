@@ -17,6 +17,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import BASE_URL from "../config";
 
 const UserDashboard = () => {
   const [appliedCount, setAppliedCount] = useState(0);
@@ -32,7 +33,7 @@ const UserDashboard = () => {
       try {
         // 🔹 Fetch applied jobs count
         const appliedRes = await axios.get(
-          "http://localhost:5000/api/user/jobs/applied/count",
+          `${BASE_URL}/user/jobs/applied/count`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -52,7 +53,7 @@ const UserDashboard = () => {
 
         // 🔹 Fetch favorite jobs
         const favoritesRes = await axios.get(
-          "http://localhost:5000/api/user/jobs/favorites",
+          `${BASE_URL}/user/jobs/favorites`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -71,12 +72,9 @@ const UserDashboard = () => {
         }
 
         // 🔹 Fetch job alerts
-        const alertsRes = await axios.get(
-          "http://localhost:5000/api/user/job-alerts",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const alertsRes = await axios.get(`${BASE_URL}/user/job-alerts`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         console.log("🔔 Job alerts API response:", alertsRes.data);
 

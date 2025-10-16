@@ -12,14 +12,11 @@ const ManageJobs = () => {
   const fetchRecruiterJobs = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(
-        "http://localhost:5000/api/jobs/recruiter",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const { data } = await axios.get(`${BASE_URL}/jobs/recruiter`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (data.success) setJobs(data.jobs);
       else toast.error("Failed to fetch jobs!");
@@ -38,7 +35,7 @@ const ManageJobs = () => {
   const handleVisibilityChange = async (jobId, currentVisibility) => {
     try {
       const { data } = await axios.patch(
-        `http://localhost:5000/api/jobs/${jobId}/visibility`,
+        `${BASE_URL}/jobs/${jobId}/visibility`,
         { isVisible: !currentVisibility },
         {
           headers: {
