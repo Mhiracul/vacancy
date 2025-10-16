@@ -25,7 +25,7 @@ async function startServer() {
 
     app.use(
       cors({
-        origin: "http://localhost:5173", // your React app origin
+        origin: "https://vacancy-xi.vercel.app", // your React app origin
         credentials: true, // allow cookies or auth headers
       })
     );
