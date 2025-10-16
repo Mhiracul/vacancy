@@ -1,0 +1,237 @@
+// src/layouts/Dashboard.jsx
+import React, { useEffect, useState } from "react";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import Logo from "../assets/Logoo.svg";
+import Logout from "../assets/logout.svg";
+import Google from "../assets/googlelogo.png";
+import {
+  BriefcaseBusiness,
+  BellRing,
+  Bookmark,
+  Settings,
+  LogOut,
+} from "lucide-react";
+
+const Dashboard = () => {
+  const navigate = useNavigate();
+  const [role, setRole] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+      setRole(parsedUser.role || "user"); // safely set role
+    } else {
+      navigate("/login");
+    }
+  }, [navigate]);
+  const menuItems = {
+    recruiter: [
+      { label: "Dashboard", path: "/dashboard", icon: "/src/assets/Fill.svg" },
+      {
+        label: "Add Job",
+        path: "/dashboard/add-job",
+        icon: "/src/assets/AddJ.svg",
+      },
+      {
+        label: "Manage Jobs",
+        path: "/dashboard/manage-job",
+        icon: "/src/assets/ManageJ.svg",
+      },
+      {
+        label: "View Applications",
+        path: "/dashboard/view-applications",
+        icon: "/src/assets/viewApp.svg",
+      },
+      {
+        label: "Settings",
+        path: "/dashboard/settings",
+        icon: <Settings strokeWidth={2} className="w-5 h-5" />,
+      },
+    ],
+    user: [
+      { label: "Dashboard", path: "/dashboard", icon: "/src/assets/Fill.svg" },
+      {
+        label: "Jobs Alert",
+        path: "/dashboard/jobs-for-you",
+        icon: <BellRing strokeWidth={2} className="w-5 h-5" />,
+      },
+      {
+        label: "Applied Jobs",
+        path: "/dashboard/applied-jobs",
+        icon: <BriefcaseBusiness strokeWidth={2} className="w-5 h-5" />,
+      },
+      {
+        label: "Favorite Jobs",
+        path: "/dashboard/favorite-jobs",
+        icon: <Bookmark strokeWidth={2} className="w-5 h-5" />,
+      },
+      {
+        label: "Settings",
+        path: "/dashboard/user-settings",
+        icon: <Settings strokeWidth={2} className="w-5 h-5" />,
+      },
+    ],
+    admin: [
+      { label: "Dashboard", path: "/dashboard", icon: "/src/assets/Fill.svg" },
+      {
+        label: "Manage Users",
+        path: "/dashboard/manage-users",
+        icon: "/src/assets/users.svg",
+      },
+      {
+        label: "Manage Jobs",
+        path: "/dashboard/manage-all-jobs",
+        icon: "/src/assets/manageJobs.svg",
+      },
+      {
+        label: "Settings",
+        path: "/dashboard/settings",
+        icon: "/src/assets/settings.svg",
+      },
+    ],
+  };
+
+  const links = menuItems[role] || [];
+
+  // Fully functional logout
+  const handleLogout = async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+      // Call backend logout API
+      await axios.post(
+        "http://localhost:5000/api/auth/logout",
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (err) {
+      console.warn("Backend logout failed:", err.response?.data || err.message);
+    } finally {
+      // Clear local storage
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+
+      // Show toast and redirect to home
+      toast.success("Logged out successfully!");
+      setTimeout(() => navigate("/"), 500);
+    }
+  };
+
+  return (
+    <div className="min-h-screen font-outfit bg-[#f9f9ff]">
+      <Toaster position="top-right" />
+      {/* Navbar */}
+      <div className="shadow py-4 bg-white">
+        <div className="px-5 flex justify-between items-center">
+          <img
+            onClick={() => navigate("/")}
+            src={Logo}
+            alt="Logo"
+            className="w-32 h-10 cursor-pointer"
+          />
+          <div className="flex items-center gap-3">
+            <p className="max-sm:hidden capitalize">{user?.firstName}</p>
+            <div className="relative group">
+              <img
+                src={user?.profileImage || Google} // fallback to Google logo
+                alt="Profile"
+                className="w-8 h-8 border border-[#e2e2e2] rounded-full cursor-pointer object-cover"
+              />
+              <div className="absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-12">
+                <ul className="list-none m-0 p-2 bg-white rounded-md border border-[#e2e2e2] text-sm">
+                  <li
+                    className="py-1 px-2 pr-10 cursor-pointer hover:bg-gray-100"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Layout */}
+      <div className="flex flex-col lg:flex-row">
+        {/* Sidebar for large screens */}
+        <div className="hidden lg:inline-block min-h-screen border-r-2 border-[#e2e2e2]">
+          <ul className="flex flex-col gap-6 items-start pt-5 text-gray-800">
+            {links.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `flex items-center p-3 sm:px-6 gap-2 w-full hover:rounded-md hover:shadow hover:bg-gray-100 ${
+                    isActive ? "bg-blue-50 border-r-4 border-[#0867bc]" : ""
+                  }`
+                }
+              >
+                {typeof item.icon === "string" ? (
+                  <img src={item.icon} alt="" className="w-4" />
+                ) : (
+                  item.icon
+                )}
+                <p className="max-sm:hidden">{item.label}</p>
+              </NavLink>
+            ))}
+          </ul>
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 p-5">
+          <Outlet />
+        </div>
+      </div>
+
+      {/* Mobile bottom menu */}
+      {/* Mobile bottom menu */}
+      <div className="fixed bottom-0 left-0 w-full lg:hidden bg-white border-t border-gray-200 shadow-md">
+        <ul className="flex justify-around items-center py-2">
+          {links.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) =>
+                `relative flex flex-col items-center text-gray-500 hover:text-blue-500 ${
+                  isActive ? "text-blue-500" : ""
+                }`
+              }
+            >
+              {typeof item.icon === "string" ? (
+                <img src={item.icon} alt="" className="w-4 h-4 mb-1" />
+              ) : (
+                React.cloneElement(item.icon, { className: "w-4 h-4 mb-1" })
+              )}
+
+              {/* Tooltip on hover */}
+              <span className="absolute bottom-full mb-2 w-max px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                {item.label}
+              </span>
+            </NavLink>
+          ))}
+
+          <li
+            onClick={handleLogout}
+            className="relative flex flex-col items-center text-gray-500 hover:text-blue-500 cursor-pointer"
+          >
+            <LogOut strokeWidth={2} className="w-4 h-4" />
+
+            {/* Tooltip for logout */}
+            <span className="absolute bottom-full mb-2 w-max px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+              Logout
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;

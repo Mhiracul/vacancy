@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --font-roboto: "Roboto Condensed", sans-serif;
+  --font-opensans: "Open Sans", sans-serif;
+  --font-dmsans: "DM Sans", sans-serif;
+  --font-outfit: "Outfit", sans-serif;
+  --color-primary: #00a2ea;
+  --color-primary-hover: #0089c7;
+}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+.rich-text {
+  font-size: 15px;
+  color: #7a7b7d;
+}
+
+.rich-text p {
+  margin-bottom: 16px;
+}
+.rich-text h1 {
+  font-size: 36px;
+  font-weight: 800;
+  color: #252525;
+  margin: 10px;
+}
+.rich-text h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #252525;
+  margin: 10px;
+}
+.rich-text h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333333;
+  margin: 10px;
+}
+.rich-text h4 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #444444;
+  margin: 10px;
+}
+.rich-text h5 {
+  font-size: 14px;
+  font-weight: 400;
+  color: #555555;
+  margin: 10px;
+}
+.rich-text h6 {
+  font-size: 12px;
+  font-weight: 400;
+  color: #666666;
+  margin: 10px;
+}
+.rich-text strong {
+  font-weight: 700;
+}
+.rich-text ol {
+  margin-left: 30px;
+  list-style-type: decimal;
+}
+.rich-text ul {
+  margin-left: 30px;
+  list-style-type: decimal;
+}
+.rich-text li {
+  margin-bottom: 8px;
+}
+
+.ql-container {
+  min-height: 150px !important; /* or whatever height you want */
+}
+
+.ql-editor {
+  min-height: 200px !important;
+  height: auto !important;
+  padding: 1rem;
+  font-size: 13px;
+}
