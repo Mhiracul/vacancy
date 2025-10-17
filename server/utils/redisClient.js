@@ -1,9 +1,16 @@
-const redis = require("redis");
+let redisClient = null;
 
-const redisClient = redis.createClient({
-  url: process.env.REDIS_URL || "redis://localhost:6379",
-});
-
-redisClient.connect().catch(console.error);
+try {
+  if (process.env.REDIS_URL) {
+    const redis = require("redis");
+    redisClient = redis.createClient({ url: process.env.REDIS_URL });
+    redisClient.connect();
+    console.log("✅ Connected to Redis");
+  } else {
+    console.log("⚠️ No Redis configured. Running without cache.");
+  }
+} catch (err) {
+  console.error("❌ Redis connection failed:", err.message);
+}
 
 module.exports = redisClient;

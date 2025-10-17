@@ -68,7 +68,8 @@ exports.getUserAppliedJobs = async (req, res) => {
     const appliedJobs = await AppliedJob.find({ user: userId })
       .populate({
         path: "job",
-        select: "title location salary category recruiter minSalary maxSalary",
+        select:
+          "title location salary category jobType experience description recruiter minSalary maxSalary",
         populate: {
           path: "recruiter",
           select: "firstName lastName email company",

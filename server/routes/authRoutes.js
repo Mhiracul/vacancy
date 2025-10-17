@@ -15,6 +15,7 @@ const {
   uploadResume,
   getUserProfile,
   deleteResume,
+  getUsersSettings,
 } = require("../controllers/authController");
 const upload = require("../middlewares/upload");
 const { authenticate } = require("../middlewares/auth");
@@ -44,6 +45,8 @@ router.post(
   upload.single("file"),
   uploadResume
 );
+router.get("/profile-settings", authenticate, getUsersSettings);
+
 router.get("/profile", authenticate, getUserProfile);
 router.delete("/delete-resume/:resumeId", authenticate, deleteResume);
 

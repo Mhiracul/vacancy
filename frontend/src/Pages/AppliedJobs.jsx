@@ -6,12 +6,13 @@ import BASE_URL from "../config";
 const AppliedJobs = () => {
   const [appliedJobs, setAppliedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedJob, setSelectedJob] = useState(null);
 
   useEffect(() => {
     const fetchAppliedJobs = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`${BASE_URL}//user/jobs/applied`, {
+        const res = await axios.get(`${BASE_URL}/user/jobs/applied`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAppliedJobs(res.data || []);
@@ -116,7 +117,10 @@ const AppliedJobs = () => {
                             <div className="flex items-center gap-1 text-green-600 text-sm">
                               <Check className="w-4 h-4" /> Active
                             </div>
-                            <button className="text-[#0867bc] bg-gray-100 p-2 px-6 hover:bg-gray-200  font-medium text-sm w-fit">
+                            <button
+                              onClick={() => setSelectedJob(job)}
+                              className="text-[#0867bc] bg-gray-100 p-2 px-6 hover:bg-gray-200  font-medium text-sm w-fit"
+                            >
                               View Details
                             </button>
                           </div>
@@ -136,7 +140,10 @@ const AppliedJobs = () => {
 
                     {/* Action (hidden on small) */}
                     <td className="px-6 py-4 max-sm:hidden">
-                      <button className="text-[#0867bc] whitespace-nowrap bg-gray-50 p-2.5 px-8 hover:bg-gray-100 rounded-md font-medium text-sm">
+                      <button
+                        onClick={() => setSelectedJob(job)}
+                        className="text-[#0867bc] whitespace-nowrap bg-gray-50 p-2.5 px-8 hover:bg-gray-100 rounded-md font-medium text-sm"
+                      >
                         View Details
                       </button>
                     </td>
@@ -169,6 +176,99 @@ const AppliedJobs = () => {
           &gt;
         </button>
       </div>
+
+      {/* Modal */}
+      {selectedJob && (
+        <div
+          className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center px-4 py-10 overflow-y-auto"
+          onClick={() => setSelectedJob(null)} // close on background click
+        >
+          <div
+            className="bg-white w-full max-w-3xl rounded-lg shadow-lg relative overflow-y-auto max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedJob(null)}
+              className="absolute top-3 right-3 z-10  bg-white rounded-full px-3 py-1.5 hover:bg-blue-100 hover:text-[#0867bc] transition"
+            >
+              ✕
+            </button>
+
+            {/* Banner */}
+            <div className="relative h-40 bg-gray-100 rounded-t-lg">
+              <img
+                src={
+                  selectedJob.recruiter?.company.banner ||
+                  "https://via.placeholder.com/800x200"
+                }
+                alt="Company Banner"
+                className="w-full h-full object-cover rounded-t-lg"
+              />
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Title + Company */}
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  {selectedJob.title}
+                </h2>
+                <p className="text-gray-500">
+                  {selectedJob.recruiter?.company.name ||
+                    "Company name unavailable"}
+                </p>
+              </div>
+
+              {/* Details */}
+              <div className="grid sm:grid-cols-2 gap-4 text-sm text-gray-600">
+                <p>
+                  <strong>Location:</strong> {selectedJob.location || "N/A"}
+                </p>
+                <p>
+                  <strong>Salary:</strong> ₦
+                  {selectedJob.minSalary
+                    ? `${selectedJob.minSalary.toLocaleString()} - ₦${selectedJob.maxSalary?.toLocaleString()}`
+                    : selectedJob.salary || "N/A"}
+                </p>
+                <p>
+                  <strong>Job Type:</strong> {selectedJob.jobType || "N/A"}
+                </p>
+                <p>
+                  <strong>Experience:</strong> {selectedJob.experience || "N/A"}
+                </p>
+              </div>
+
+              {/* Description */}
+              <div>
+                <h3 className="font-semibold text-gray-800 mb-2">
+                  Job Description
+                </h3>
+                <div
+                  className="text-gray-600 text-sm leading-relaxed space-y-2 prose max-w-none"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      selectedJob.description ||
+                      "<p>No job description provided for this position.</p>",
+                  }}
+                />
+              </div>
+
+              {/* Recruiter Info */}
+              <div className="border-t border-gray-200 pt-4">
+                <h4 className="font-semibold text-gray-800 mb-2">
+                  Recruiter Information
+                </h4>
+                <p className="text-sm text-gray-600">
+                  {selectedJob.recruiter?.company.name || "N/A"}
+                </p>
+                <p className="text-sm text-gray-600">
+                  {selectedJob.recruiter?.email || "N/A"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

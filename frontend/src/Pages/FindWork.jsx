@@ -32,9 +32,9 @@ const FindWork = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="flex items-center justify-between gap-6">
-            <div className="flex flex-col sm:flex-row items-center justify-between border border-gray-300 rounded-md text-gray-600 p-2 max-w-[80%] bg-white shadow-sm  w-full">
-              <div className="flex items-center w-full sm:w-1/2">
+          <div className="flex md:flex-row flex-col items-center justify-between gap-4">
+            <div className="flex flex-row items-center justify-between border border-gray-300 rounded-md text-gray-600 p-2 bg-white shadow-sm  w-full">
+              <div className="flex items-center w-full ">
                 <Search
                   className="h-4 sm:h-5 text-gray-400 mx-2"
                   strokeWidth={0.5}
@@ -42,11 +42,11 @@ const FindWork = () => {
                 <input
                   type="text"
                   placeholder="Search for jobs"
-                  className="text-sm p-2 w-full outline-none"
+                  className="text-sm p-2 w-full placeholder:text-sm outline-none"
                   ref={titleRef}
                 />
               </div>
-              <div className="flex items-center w-full sm:w-1/2 sm:border-l border-gray-200">
+              <div className="flex items-center w-full  sm:border-l border-gray-200">
                 <MapPin
                   className="h-4 sm:h-5 text-gray-400 mx-2"
                   strokeWidth={0.5}
@@ -54,13 +54,13 @@ const FindWork = () => {
                 <input
                   type="text"
                   placeholder="Location"
-                  className="text-sm p-2 w-full outline-none"
+                  className="text-sm p-2 placeholder:text-sm w-full outline-none"
                   ref={locationRef}
                 />
               </div>
               <button
                 onClick={onSearch}
-                className="bg-[#0867bc] px-6 py-2 text-white rounded-md sm:ml-2 mt-2 sm:mt-0 hover:bg-[#065ba3] transition-all"
+                className="bg-[#0867bc] text-sm px-4 py-2 text-white rounded-md sm:ml-2 mt-2 sm:mt-0 hover:bg-[#065ba3] transition-all"
               >
                 Search
               </button>
@@ -68,7 +68,7 @@ const FindWork = () => {
 
             <button
               onClick={() => setFilterVisible((prev) => !prev)}
-              className="flex items-center gap-2 bg-transparent border border-gray-400 text-black py-2 px-4 rounded-md hover:bg-gray-200 transition-all"
+              className="flex items-center gap-2 bg-transparent whitespace-nowrap border border-gray-400 text-black py-2 px-4 rounded-md hover:bg-gray-200 transition-all"
             >
               <SlidersHorizontal className="w-4 h-4" />
               {filterVisible ? "Hide Filters" : "Show Filters"}

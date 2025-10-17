@@ -57,6 +57,25 @@ exports.registerUser = async (req, res) => {
   }
 };
 
+exports.getUsersSettings = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const user = await User.findById(userId).select(
+      "dob gender education experience resumes website bio socialLinks profileImage"
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error fetching user settings:", error);
+    res.status(500).json({ message: "Error fetching user settings" });
+  }
+};
+
 exports.markPaymentSuccess = async (req, res) => {
   try {
     const { id } = req.params;
@@ -176,18 +195,11 @@ exports.logout = async (req, res) => {
         .json({ success: false, message: "No token provided" });
     }
 
-    // Calculate token expiration in seconds
-    const decoded = req.user; // Already decoded in authenticate middleware
-    const expInSeconds = decoded.exp - Math.floor(Date.now() / 1000);
-
-    if (expInSeconds > 0) {
-      // Add token to Redis blacklist
-      await redisClient.set(token, "blacklisted", { EX: expInSeconds });
-    }
-
-    return res
-      .status(200)
-      .json({ success: true, message: "Logged out successfully" });
+    // Just respond success — JWT will expire automatically
+    return res.status(200).json({
+      success: true,
+      message: "Logged out successfully (token will expire soon)",
+    });
   } catch (err) {
     console.error("Logout error:", err);
     return res.status(500).json({ success: false, message: "Server error" });

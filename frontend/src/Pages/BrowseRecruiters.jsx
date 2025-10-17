@@ -3,6 +3,7 @@ import axios from "axios";
 import Header from "../Components/Header";
 import RecruiterModal from "../Components/RecruiterModal";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import BASE_URL from "../config";
 
 const BrowseRecruiters = () => {
   const [recruiters, setRecruiters] = useState([]);

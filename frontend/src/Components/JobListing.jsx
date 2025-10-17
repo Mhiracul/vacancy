@@ -82,7 +82,7 @@ const JobListing = ({ initialShowFilter = false }) => {
 
   return (
     <div className="bg-[#F9FAFF] font-outfit ">
-      <div className="container 2xl:px-20 mx-auto flex gap-10 flex-col lg:flex-row max-lg:space-y-8 py-16">
+      <div className="container 2xl:px-20 px-4 mx-auto flex gap-10 flex-col lg:flex-row max-lg:space-y-8 py-16">
         {/* Sidebar */}
         <div
           className={`w-full lg:w-[23%] shadow-lg rounded bg-white px-4 transition-all duration-300 ${

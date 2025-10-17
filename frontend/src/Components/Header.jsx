@@ -78,7 +78,7 @@ function Header() {
         </Link>
 
         {/* Desktop Nav */}
-        <ul className="hidden md:flex text-base items-center gap-3 lg:gap-8">
+        <ul className="hidden md:flex text-base items-center gap-3 md:gap-6">
           {navLinks.map(({ path, label }) => (
             <li key={path}>
               <Link

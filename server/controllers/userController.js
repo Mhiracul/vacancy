@@ -5,7 +5,8 @@ const crypto = require("crypto");
 const User = require("../models/User");
 const transporter = require("../utils/emailService");
 const axios = require("axios");
-const fetch = require("node-fetch");
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 exports.verifyUserEmail = async (req, res) => {
   try {

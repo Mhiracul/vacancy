@@ -12,6 +12,7 @@ import {
   Bookmark,
   Settings,
   LogOut,
+  LayoutDashboard,
 } from "lucide-react";
 
 const Dashboard = () => {
@@ -55,26 +56,34 @@ const Dashboard = () => {
       },
     ],
     user: [
-      { label: "Dashboard", path: "/dashboard", icon: "/src/assets/Fill.svg" },
+      {
+        label: "Dashboard",
+        path: "/dashboard",
+        icon: (
+          <LayoutDashboard strokeWidth={2} className="w-10 h-10" size={26} />
+        ),
+      },
       {
         label: "Jobs Alert",
         path: "/dashboard/jobs-for-you",
-        icon: <BellRing strokeWidth={2} className="w-5 h-5" />,
+        icon: <BellRing strokeWidth={2} className="w-10 h-10" size={26} />,
       },
       {
         label: "Applied Jobs",
         path: "/dashboard/applied-jobs",
-        icon: <BriefcaseBusiness strokeWidth={2} className="w-5 h-5" />,
+        icon: (
+          <BriefcaseBusiness strokeWidth={2} className="w-10 h-10" size={26} />
+        ),
       },
       {
         label: "Favorite Jobs",
         path: "/dashboard/favorite-jobs",
-        icon: <Bookmark strokeWidth={2} className="w-5 h-5" />,
+        icon: <Bookmark strokeWidth={2} className="w-10 h-10" size={26} />,
       },
       {
         label: "Settings",
         path: "/dashboard/user-settings",
-        icon: <Settings strokeWidth={2} className="w-5 h-5" />,
+        icon: <Settings strokeWidth={2} className="w-10 h-10" size={26} />,
       },
     ],
     admin: [
@@ -168,13 +177,13 @@ const Dashboard = () => {
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center p-3 sm:px-6 gap-2 w-full hover:rounded-md hover:shadow hover:bg-gray-100 ${
+                  `flex items-center p-8 sm:px-6 gap-2 w-full hover:rounded-md hover:shadow hover:bg-gray-100 ${
                     isActive ? "bg-blue-50 border-r-4 border-[#0867bc]" : ""
                   }`
                 }
               >
                 {typeof item.icon === "string" ? (
-                  <img src={item.icon} alt="" className="w-4" />
+                  <img src={item.icon} alt="" className="w-10" />
                 ) : (
                   item.icon
                 )}
@@ -207,7 +216,7 @@ const Dashboard = () => {
               {typeof item.icon === "string" ? (
                 <img src={item.icon} alt="" className="w-4 h-4 mb-1" />
               ) : (
-                React.cloneElement(item.icon, { className: "w-4 h-4 mb-1" })
+                React.cloneElement(item.icon, { className: "w-6 h-6 mb-1" })
               )}
 
               {/* Tooltip on hover */}
