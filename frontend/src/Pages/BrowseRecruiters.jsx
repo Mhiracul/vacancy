@@ -69,7 +69,7 @@ const BrowseRecruiters = () => {
                 >
                   <div className="flex items-center py-1 gap-4 mb-4">
                     <img
-                      src={r.companyLogo || "https://via.placeholder.com/60"}
+                      src={r.companyLogo}
                       alt={r.companyName}
                       className="w-14 h-14 rounded-full object-cover"
                     />

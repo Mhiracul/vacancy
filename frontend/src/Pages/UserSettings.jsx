@@ -242,11 +242,7 @@ const UserSettings = () => {
               }
             >
               <img
-                src={
-                  selectedImage ||
-                  userData.profileImage ||
-                  "https://via.placeholder.com/150?text=Profile"
-                }
+                src={selectedImage || userData.profileImage}
                 alt="Profile"
                 className="w-32 h-32 rounded-full object-cover mb-3"
               />

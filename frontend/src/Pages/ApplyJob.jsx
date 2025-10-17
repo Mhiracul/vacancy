@@ -181,10 +181,7 @@ const ApplyJob = () => {
           <div className="flex justify-center md:justify-between flex-wrap gap-8 px-10 py-16 mb-6 bg-sky-50 border border-sky-400 rounded-xl">
             <div className="flex flex-col md:flex-row items-center">
               <img
-                src={
-                  jobData.recruiter.company.logo ||
-                  "https://via.placeholder.com/150x100?text=Company+Logo"
-                }
+                src={jobData.recruiter.company.logo}
                 alt={jobData.recruiter.company.name || "Company Logo"}
                 className="h-24 bg-white rounded-lg p-4 mr-4 max-md:mb-4 border border-gray-200"
               />

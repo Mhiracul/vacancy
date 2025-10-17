@@ -125,10 +125,7 @@ const BrowseCandidates = () => {
                   >
                     <div className="flex items-center gap-4">
                       <img
-                        src={
-                          c.profileImage ||
-                          "https://via.placeholder.com/60x60.png?text=User"
-                        }
+                        src={c.profileImage}
                         alt="Profile"
                         className="w-14 h-14 rounded-md shadow object-cover"
                       />

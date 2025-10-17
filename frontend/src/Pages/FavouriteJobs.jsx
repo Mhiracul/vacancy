@@ -164,10 +164,7 @@ const FavoriteJobs = () => {
                 <div className="flex items-start gap-4 w-full">
                   <div className="w-12 h-12 rounded-full flex items-center justify-center">
                     <img
-                      src={
-                        job.recruiter?.company?.logo ||
-                        "https://via.placeholder.com/80x80?text=Logo"
-                      }
+                      src={job.recruiter?.company?.logo}
                       alt={job.title}
                       className="w-8 h-8 rounded-full object-contain"
                     />
