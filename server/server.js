@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const connectDB = require("./config/db");
-const Sentry = require("@sentry/node");
 const authRoutes = require("./routes/authRoutes");
 const recruiterRoutes = require("./routes/recruiterRoutes");
 const recruiterJobRoutes = require("./routes/recruiterJobRoutes");
@@ -11,8 +10,6 @@ const jobRoutes = require("./routes/jobRoutes");
 const userRoutes = require("./routes/userRoutes");
 const userPaymentRoutes = require("./routes/userPaymentRoutes");
 const candidateRoutes = require("./routes/candidateRoutes");
-
-require("./config/instrument.js");
 
 // Initialize Express
 const app = express();
@@ -45,12 +42,6 @@ async function startServer() {
     app.use("/api/user/payment", userPaymentRoutes);
     app.use("/api/candidates", candidateRoutes);
     app.use("/api/user", userRoutes);
-
-    app.get("/debug-sentry", (req, res) => {
-      throw new Error("My first Sentry error!");
-    });
-
-    Sentry.setupExpressErrorHandler(app);
 
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

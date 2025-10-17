@@ -1,7 +1,4 @@
 // src/config.js
-const BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://d34b14c986fe.ngrok-free.app/api"
-    : "http://localhost:5000/api";
+const BASE_URL = "https://app.assuchglobal.com/api"; // include /api if needed
 
 export default BASE_URL;

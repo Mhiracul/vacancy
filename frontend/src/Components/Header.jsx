@@ -5,6 +5,7 @@ import Logo from "../assets/Logoo.svg";
 import { JobsContext } from "../context/jobContext";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import BASE_URL from "../config";
 
 function Header() {
   const location = useLocation();
