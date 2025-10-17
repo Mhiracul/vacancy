@@ -22,11 +22,12 @@ async function startServer() {
   try {
     await connectDB();
     console.log("✅ Database connected successfully");
-
     app.use(
       cors({
-        origin: "https://vacancy-xi.vercel.app", // your React app origin
-        credentials: true, // allow cookies or auth headers
+        origin: (origin, callback) => {
+          callback(null, true); // allow any origin dynamically
+        },
+        credentials: true,
       })
     );
     app.use(express.json());
