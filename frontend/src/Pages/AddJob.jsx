@@ -78,6 +78,48 @@ const AddJob = () => {
     "Travel, Tourism & Aviation",
   ];
 
+  const nigeriaLocations = [
+    "Abeokuta & Ogun State",
+    "Abuja",
+    "Benue",
+    "Ebonyi",
+    "Enugu",
+    "Ibadan & Oyo State",
+    "Imo",
+    "Lagos",
+    "Maiduguri & Borno State",
+    "Port Harcourt & Rivers State",
+    "Rest of Nigeria",
+    "Outside Nigeria",
+    "Remote (Work From Home)",
+    "Abia",
+    "Adamawa",
+    "Akwa Ibom",
+    "Anambra",
+    "Cross River",
+    "Delta",
+    "Edo",
+    "Ekiti",
+    "Gombe",
+    "Kaduna",
+    "Kano",
+    "Kebbi",
+    "Kogi",
+    "Kwara",
+    "Nassarawa",
+    "Nationwide",
+    "Niger",
+    "Ondo",
+    "Osun",
+    "Plateau",
+    "Sokoto",
+  ];
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const filteredLocations = nigeriaLocations.filter((loc) =>
+    loc.toLowerCase().includes(location.toLowerCase())
+  );
+
   const jobRoles = [
     // 💼 Accounting, Auditing & Finance
     "Accountant",
@@ -486,7 +528,8 @@ const AddJob = () => {
 
         {/* Location + Expiration */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div>
+          {/* Location Field */}
+          <div className="relative">
             <label className="text-gray-700 text-sm font-outfit mb-2 block">
               Location
             </label>
@@ -494,14 +537,40 @@ const AddJob = () => {
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              placeholder="Enter job location"
+              placeholder="Type or select job location"
               className="w-full px-4 py-2 border rounded-md placeholder:text-gray-400 placeholder:text-sm border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
+              onFocus={() => setShowSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
             />
+
+            {/* Dropdown Suggestions */}
+            {showSuggestions && (
+              <ul className="absolute z-20 bg-white border border-gray-200 rounded-md mt-1 max-h-48 overflow-y-auto w-full shadow-md">
+                {filteredLocations.length > 0 ? (
+                  filteredLocations.map((loc, i) => (
+                    <li
+                      key={i}
+                      onMouseDown={() => {
+                        setLocation(loc);
+                        setShowSuggestions(false);
+                      }}
+                      className="px-4 py-2 cursor-pointer hover:bg-blue-50 text-gray-700 text-sm"
+                    >
+                      {loc}
+                    </li>
+                  ))
+                ) : (
+                  <li className="px-4 py-2 text-gray-400 text-sm">
+                    No matches
+                  </li>
+                )}
+              </ul>
+            )}
           </div>
 
           <div>
             <label className="text-gray-700 font-outfit text-sm  mb-2 block">
-              Expiration Date
+              Application Deadline Date
             </label>
             <input
               type="date"
@@ -510,7 +579,7 @@ const AddJob = () => {
               onFocus={(e) =>
                 e.target.showPicker ? e.target.showPicker() : null
               } // optional: auto-open picker
-              placeholder="Select expiration date"
+              placeholder="Deadline date"
               className={`w-full px-4 py-2 border rounded-md placeholder:text-gray-400 placeholder:text-sm placeholder:uppercase border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none
       ${!expirationDate ? "text-gray-400" : "text-gray-800"}`}
               onClick={(e) => e.currentTarget.showPicker?.()} // optional (ensures consistency)

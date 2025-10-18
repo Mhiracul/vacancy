@@ -126,12 +126,12 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="container mx-auto">
-        <ul className="space-y-3  2xl:px-20 flex items-center justify-between text-sm text-gray-600">
-          <li className="flex items-center gap-2">About Us</li>
-          <li className="flex items-center gap-2">Terms</li>
-          <li className="flex items-center gap-2">Privacy</li>
-          <li className="flex items-center gap-2">CV Review Service</li>
+      <div className="container px-4 2xl:px-20 mx-auto">
+        <ul className="  flex items-center justify-between text-sm text-gray-600">
+          <li className="">About Us</li>
+          <li className="">Terms</li>
+          <li className="">Privacy</li>
+          <li className="">CV Review Service</li>
         </ul>
       </div>
       {/* Bottom Section */}

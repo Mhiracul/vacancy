@@ -80,7 +80,7 @@ const Hero = () => {
           </div>
 
           {/* Right image */}
-          <div className="flex-1 flex justify-center md:justify-end">
+          <div className="flex-1 md:flex hidden justify-center md:justify-end">
             <img
               src={SideImage}
               alt="Hero visual"

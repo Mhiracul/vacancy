@@ -234,9 +234,9 @@ const getApplicationsForRecruiter = async (req, res) => {
 
       .populate({
         path: "job",
-        select: "title location",
+        select: "title location minSalary maxSalary",
       })
-      .select("resume coverLetter status user job appliedAt"); // include coverLetter
+      .select("resume coverLetter status user job appliedAt "); // include coverLetter
 
     console.log("Applications fetched:", applications); // ✅ Add this
 

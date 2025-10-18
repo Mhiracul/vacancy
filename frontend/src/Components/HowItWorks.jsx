@@ -21,7 +21,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="relative font-outfit bg-[#FFF] py-20 overflow-hidden">
+    <section className="relative font-outfit bg-[#FFF] 2xl:px-20 px-4 py-20 overflow-hidden">
       {/* Header */}
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-semibold text-[#0A0A0A]">

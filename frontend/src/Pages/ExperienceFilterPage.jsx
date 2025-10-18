@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import axios from "axios";
@@ -17,6 +17,7 @@ const ExperienceFilterPage = () => {
   const [counts, setCounts] = useState({});
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -32,8 +33,20 @@ const ExperienceFilterPage = () => {
     fetchCounts();
   }, []);
 
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    }
+  };
+
   return (
-    <section className="py-20 container mx-auto px-4 2xl:px-20 text-center">
+    <section className="py-20 container mx-auto px-4 2xl:px-10 text-center">
       <h2 className="text-3xl font-bold mb-3 text-gray-900">
         Experience-based filtering
       </h2>
@@ -44,16 +57,30 @@ const ExperienceFilterPage = () => {
       {loading ? (
         <p className="text-gray-500 py-10">Loading job data...</p>
       ) : (
-        <div className="relative mb-10">
-          {/* Scrollable container */}
-          <div className="flex gap-6 overflow-x-auto scrollbar-thin scrollbar-thumb-blue-600 scrollbar-track-gray-100 pb-4 snap-x snap-mandatory scroll-smooth">
+        <>
+          {/* ⬅️➡️ Buttons on top */}
+
+          {/* Cards container */}
+          <div
+            ref={scrollRef}
+            className="
+              flex flex-wrap justify-center gap-2 
+              md:flex-nowrap md:overflow-x-auto md:scroll-smooth md:pb-4
+              md:scrollbar-thin md:scrollbar-thumb-blue-600 md:scrollbar-track-gray-100
+            "
+          >
             {experienceLevels.map((level) => (
               <div
                 key={level}
                 onClick={() =>
                   navigate(`/jobs/experience/${encodeURIComponent(level)}`)
                 }
-                className="min-w-[220px] flex-shrink-0 border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md hover:border-blue-600 transition cursor-pointer text-left bg-white snap-center"
+                className="
+                  w-full sm:w-[47%] lg:w-[30%] xl:w-[240px]
+                  flex-shrink-0 border border-gray-200 rounded-lg p-6 
+                  shadow-sm hover:shadow-md hover:border-blue-600 transition 
+                  cursor-pointer text-left bg-white
+                "
               >
                 <h3 className="font-semibold text-lg mb-1 text-gray-800">
                   {level}
@@ -67,12 +94,12 @@ const ExperienceFilterPage = () => {
               </div>
             ))}
           </div>
-        </div>
+        </>
       )}
 
       <button
         onClick={() => navigate("/all-jobs")}
-        className="bg-blue-700 text-white font-medium px-6 py-2 rounded hover:bg-blue-800 transition"
+        className="bg-blue-700 text-white font-normal text-base px-4 py-2 mt-10 rounded hover:bg-blue-800 transition"
       >
         Explore All Jobs
       </button>

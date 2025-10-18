@@ -115,11 +115,11 @@ const JobsByExperience = () => {
     <>
       {" "}
       <Header />
-      <section className="py-20 container mx-auto px-4 2xl:px-20">
+      <section className="py-20 container font-outfit mx-auto px-4 2xl:px-20">
         <div className="flex flex-col lg:flex-row gap-10">
           {/* LEFT SIDE */}
           <div className="flex-1">
-            <h2 className="text-3xl font-semibold mb-6">
+            <h2 className="text-2xl font-semibold mb-6">
               {filters.experience} Jobs ({jobs.length})
             </h2>
             {loading ? (

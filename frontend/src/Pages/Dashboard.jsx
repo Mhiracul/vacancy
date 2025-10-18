@@ -1,4 +1,3 @@
-// src/layouts/Dashboard.jsx
 import React, { useEffect, useContext, useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -12,21 +11,24 @@ import {
   Settings,
   LogOut,
   LayoutDashboard,
+  Menu,
+  X,
 } from "lucide-react";
-import { JobsContext } from "../context/jobContext"; // <-- import context
+import { JobsContext } from "../context/jobContext";
 import BASE_URL from "../config";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { user, setUser } = useContext(JobsContext); // <-- use context for user
+  const { user, setUser } = useContext(JobsContext);
   const [role, setRole] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false); // mobile sidebar toggle
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
       const parsedUser = JSON.parse(userData);
-      setUser(parsedUser); // update context
-      setRole(parsedUser.role || "user"); // safely set role
+      setUser(parsedUser);
+      setRole(parsedUser.role || "user");
     } else {
       navigate("/login");
     }
@@ -121,7 +123,7 @@ const Dashboard = () => {
     } finally {
       localStorage.removeItem("user");
       localStorage.removeItem("token");
-      setUser(null); // update context so Header syncs
+      setUser(null);
       toast.success("Logged out successfully!");
       navigate("/home");
     }
@@ -129,19 +131,27 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen font-outfit bg-[#f9f9ff]">
+      {" "}
       <Toaster position="top-right" />
-
       {/* Navbar */}
-      <div className="shadow py-4 bg-white">
+      {/* Navbar */}
+      <div className="shadow py-4 bg-white fixed top-0 left-0 w-full z-40">
         <div className="px-4 flex justify-between items-center">
-          <img
-            onClick={() => navigate("/home")}
-            src={Logo}
-            alt="Logo"
-            className="h-16 cursor-pointer"
-          />
+          {/* Left Section - Logo */}
+          <div className="flex items-center gap-3">
+            <img
+              onClick={() => navigate("/home")}
+              src={Logo}
+              alt="Logo"
+              className="h-16 cursor-pointer"
+            />
+          </div>
+
+          {/* Right Section - Profile + Mobile Menu */}
           <div className="flex items-center gap-3">
             <p className="max-sm:hidden capitalize">{user?.firstName}</p>
+
+            {/* Profile Dropdown */}
             <div className="relative group">
               <img
                 src={user?.profileImage || Google}
@@ -159,75 +169,113 @@ const Dashboard = () => {
                 </ul>
               </div>
             </div>
+
+            {/* Mobile Menu Button (Now on the far right) */}
+            <button
+              className="lg:hidden ml-2"
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open menu"
+            >
+              <Menu size={26} />
+            </button>
           </div>
         </div>
       </div>
-
-      {/* Layout */}
-      <div className="flex flex-col lg:flex-row">
-        <div className="hidden lg:inline-block min-h-screen border-r-2 border-[#e2e2e2]">
-          <ul className="flex flex-col gap-6 items-start pt-5 text-gray-800">
+      {/* Desktop Sidebar */}
+      {/* Layout Wrapper */}
+      <div className="flex min-h-screen pt-24">
+        {/* Desktop Sidebar */}
+        <div className="hidden lg:flex lg:flex-col lg:w-64 border-r-2 border-[#e2e2e2] bg-white">
+          <ul className="flex flex-col px-2 gap-12 items-start text-gray-800 py-8">
             {links.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center p-8 sm:px-6 gap-2 w-full hover:rounded-md hover:shadow hover:bg-gray-100 ${
-                    isActive ? "bg-blue-50 border-r-4 border-[#0867bc]" : ""
+                  `flex items-center px-4 py-1.5 sm:px-6 gap-2 font-light w-full hover:rounded-md rounded-md hover:shadow ${
+                    isActive ? "bg-[#1967d21a]" : ""
                   }`
                 }
               >
-                {typeof item.icon === "string" ? (
-                  <img src={item.icon} alt="" className="w-4" />
-                ) : (
-                  item.icon
+                {({ isActive }) => (
+                  <>
+                    {typeof item.icon === "string" ? (
+                      <img src={item.icon} alt="" className="w-4" />
+                    ) : (
+                      item.icon
+                    )}
+                    <p
+                      className={`${
+                        isActive ? "text-[#1967d2]" : "text-[#696969]"
+                      }`}
+                    >
+                      {item.label}
+                    </p>
+                  </>
                 )}
-                <p className="max-sm:hidden">{item.label}</p>
               </NavLink>
             ))}
           </ul>
         </div>
 
-        <div className="flex-1 p-5">
+        {/* Page Content */}
+        <div className="flex-1 p-5 bg-[#f9f9ff]">
           <Outlet />
         </div>
       </div>
+      {/* Mobile Sidebar (Slide In) */}
+      <div
+        className={`fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-50 transform transition-transform duration-300 ${
+          menuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="flex justify-between items-center px-4 py-6 border-b">
+          <img src={Logo} alt="Logo" className="h-10" />
+          <button onClick={() => setMenuOpen(false)}>
+            <X size={24} />
+          </button>
+        </div>
 
-      {/* Mobile bottom menu */}
-      <div className="fixed bottom-0 left-0 w-full lg:hidden bg-white border-t border-gray-200 shadow-md">
-        <ul className="flex justify-around items-center py-2">
+        <ul className="flex flex-col gap-8 items-start p-6 text-gray-800">
           {links.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
+              onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
-                `relative flex flex-col items-center text-gray-500 hover:text-blue-500 ${
-                  isActive ? "text-blue-500" : ""
+                `flex items-center gap-3 w-full hover:bg-[#f5f5f5] p-2 rounded-md ${
+                  isActive ? "bg-[#1967d21a]" : ""
                 }`
               }
             >
-              {typeof item.icon === "string" ? (
-                <img src={item.icon} alt="" className="w-4 h-4 mb-1" />
-              ) : (
-                React.cloneElement(item.icon, { className: "w-6 h-6 mb-1" })
+              {({ isActive }) => (
+                <>
+                  {typeof item.icon === "string" ? (
+                    <img src={item.icon} alt="" className="w-4" />
+                  ) : (
+                    item.icon
+                  )}
+                  <p
+                    className={`${
+                      isActive ? "text-[#1967d2]" : "text-[#696969]"
+                    }`}
+                  >
+                    {item.label}
+                  </p>
+                </>
               )}
-              <span className="absolute bottom-full mb-2 w-max px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-                {item.label}
-              </span>
             </NavLink>
           ))}
-
           <li
             onClick={handleLogout}
-            className="relative flex flex-col items-center text-gray-500 hover:text-blue-500 cursor-pointer"
+            className="flex items-center gap-3 w-full hover:bg-[#f5f5f5] p-2 rounded-md cursor-pointer text-[#696969]"
           >
-            <LogOut strokeWidth={2} className="w-4 h-4" />
-            <span className="absolute bottom-full mb-2 w-max px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-              Logout
-            </span>
+            <LogOut strokeWidth={2} className="w-5 h-5" />
+            Logout
           </li>
         </ul>
       </div>
+      {/* Page Content */}
     </div>
   );
 };
