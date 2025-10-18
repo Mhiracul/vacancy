@@ -188,3 +188,145 @@ exports.checkIfApplied = async (req, res) => {
     });
   }
 };
+
+exports.getExperienceCounts = async (req, res) => {
+  try {
+    const experienceLevels = [
+      "No Experience",
+      "Entry Level",
+      "Internship & Graduate",
+      "Mid Level",
+      "Senior Level",
+      "Executive Level",
+    ];
+
+    const counts = {};
+
+    for (const level of experienceLevels) {
+      const count = await Job.countDocuments({
+        experience: level,
+        isVisible: true,
+      });
+      counts[level] = count;
+    }
+
+    res.status(200).json(counts);
+  } catch (error) {
+    console.error("❌ Error fetching experience counts:", error);
+    res.status(500).json({ message: "Failed to fetch experience counts" });
+  }
+};
+
+// ✅ Get all jobs filtered by experience level
+exports.getJobsByExperience = async (req, res) => {
+  try {
+    const { level } = req.params;
+
+    const jobs = await Job.find({
+      experience: level,
+      isVisible: true,
+    })
+      .populate("recruiter", "fullName email company")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(jobs);
+  } catch (error) {
+    console.error("❌ Error fetching jobs by experience:", error);
+    res.status(500).json({ message: "Failed to fetch jobs by experience" });
+  }
+};
+exports.getExperienceCounts = async (req, res) => {
+  try {
+    const experienceLevels = [
+      "No Experience",
+      "Entry Level",
+      "Internship & Graduate",
+      "Mid Level",
+      "Senior Level",
+      "Executive Level",
+    ];
+
+    const counts = {};
+
+    for (const level of experienceLevels) {
+      const count = await Job.countDocuments({
+        experience: level,
+        isVisible: true,
+      });
+      counts[level] = count;
+    }
+
+    res.status(200).json(counts);
+  } catch (error) {
+    console.error("❌ Error fetching experience counts:", error);
+    res.status(500).json({ message: "Failed to fetch experience counts" });
+  }
+};
+
+// ✅ Get all jobs filtered by experience level
+exports.getJobsByExperience = async (req, res) => {
+  try {
+    const { level } = req.params;
+
+    const jobs = await Job.find({
+      experience: level,
+      isVisible: true,
+    })
+      .populate("recruiter", "fullName email company")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(jobs);
+  } catch (error) {
+    console.error("❌ Error fetching jobs by experience:", error);
+    res.status(500).json({ message: "Failed to fetch jobs by experience" });
+  }
+};
+exports.getJobsByIndustry = async (req, res) => {
+  try {
+    const { industry } = req.params;
+    const jobs = await Job.find({ industry });
+    res.status(200).json(jobs);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// ✅ Fetch by location
+exports.getJobsByLocation = async (req, res) => {
+  try {
+    const { location } = req.params;
+    const jobs = await Job.find({ location });
+    res.status(200).json(jobs);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// ✅ Fetch by work type
+exports.getJobsByWorkType = async (req, res) => {
+  try {
+    const { jobType } = req.params;
+    const jobs = await Job.find({ jobType });
+    res.status(200).json(jobs);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// ✅ General filter endpoint (handles combined filters)
+exports.getFilteredJobs = async (req, res) => {
+  try {
+    const { experience, industry, location, jobType } = req.query;
+
+    const query = {};
+    if (experience) query.experience = experience;
+    if (industry) query.industry = industry;
+    if (location) query.location = location;
+    if (jobType) query.jobType = jobType;
+
+    const jobs = await Job.find(query);
+    res.status(200).json(jobs);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

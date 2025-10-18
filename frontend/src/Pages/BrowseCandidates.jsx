@@ -87,7 +87,7 @@ const BrowseCandidates = () => {
 
         <div className=" container px-4 2xl:px-20 mx-auto py-10 flex md:flex-row flex-col gap-6">
           {/* Sidebar Filters */}
-          <div className="w-1/4 bg-white border-gray-200 rounded-md p-4 shadow">
+          <div className="md:w-1/4 w-full bg-white border-gray-200 rounded-md p-4 shadow">
             <h3 className="font-semibold mb-4 text-gray-700">Filters</h3>
 
             {/* Gender Filter */}

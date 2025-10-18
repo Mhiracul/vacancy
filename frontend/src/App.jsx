@@ -44,6 +44,7 @@ import JobAlert from "./Pages/JobAlert.jsx";
 import About from "./Pages/About.jsx";
 import TermsAndConditions from "./Pages/TermsCondition.jsx";
 import UserTypeSelection from "./Pages/UserTypeSelection.jsx";
+import JobsByExperience from "./Pages/JobsByExperience.jsx";
 
 function AppContent() {
   const userData = localStorage.getItem("user");
@@ -73,6 +74,7 @@ function AppContent() {
         <Route path="/payment/verify-user" element={<VerifyUserPayment />} />
         <Route path="/browse-candidates" element={<BrowseCandidates />} />
         <Route path="/browse-recruiters" element={<BrowseRecruiters />} />
+        <Route path="/jobs/experience/:level" element={<JobsByExperience />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/terms" element={<TermsAndConditions />} />
         <Route path="/dashboard" element={<Dashboard />}>
