@@ -40,6 +40,10 @@ import BrowseRecruiters from "./Pages/BrowseRecruiters.jsx";
 import VerifyUserEmail from "./Pages/VerifyUserEmail.jsx";
 import VerifyUserPayment from "./Pages/VerifyUserPayment.jsx";
 import UserPayment from "./Pages/UserPayment.jsx";
+import JobAlert from "./Pages/JobAlert.jsx";
+import About from "./Pages/About.jsx";
+import TermsAndConditions from "./Pages/TermsCondition.jsx";
+import UserTypeSelection from "./Pages/UserTypeSelection.jsx";
 
 function AppContent() {
   const userData = localStorage.getItem("user");
@@ -48,7 +52,9 @@ function AppContent() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<UserTypeSelection />} />
+        <Route path="/home" element={<Home />} />{" "}
+        <Route path="/about" element={<About />} />
         <Route path="/apply-job/:id" element={<ApplyJob />} />
         <Route path="/applied-jobs" element={<Application />} />
         <Route path="/courses" element={<CoursesPage />} />
@@ -58,18 +64,17 @@ function AppContent() {
         <Route path="/verify-user-email" element={<VerifyUserEmail />} />
         <Route path="/recruiter-login" element={<RecruiterLogin />} />
         <Route path="/login" element={<UserLogin />} />
-
         <Route path="/account-setup">
           <Route index element={<RecruiterAccountSetup />} />
           <Route path="success" element={<RecruiterSetupSuccess />} />
         </Route>
-
         <Route path="/payment/verify" element={<VerifyPayment />} />
         <Route path="/user-payment" element={<UserPayment />} />
         <Route path="/payment/verify-user" element={<VerifyUserPayment />} />
         <Route path="/browse-candidates" element={<BrowseCandidates />} />
         <Route path="/browse-recruiters" element={<BrowseRecruiters />} />
         <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/terms" element={<TermsAndConditions />} />
         <Route path="/dashboard" element={<Dashboard />}>
           {/* Default dashboard outlet per role */}
           <Route
@@ -94,6 +99,7 @@ function AppContent() {
           <Route path="applied-jobs" element={<AppliedJobs />} />
           <Route path="favorite-jobs" element={<FavouriteJobs />} />
           <Route path="user-settings" element={<UserSettings />} />
+          <Route path="jobs-for-you" element={<JobAlert />} />
         </Route>
       </Routes>
     </div>

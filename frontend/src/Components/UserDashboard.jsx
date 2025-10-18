@@ -28,58 +28,68 @@ const UserDashboard = () => {
   const [isProfileIncomplete, setIsProfileIncomplete] = useState(false);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
+    const fetchData = async () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
       try {
-        // ✅ Fetch user details
-        const userRes = await axios.get(`${BASE_URL}/auth/settings`, {
+        // Fetch user profile
+        const userRes = await axios.get(`${BASE_URL}/auth/profile-settings`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
         const userData = userRes.data;
         setUser(userData);
 
-        // ✅ Check profile completeness (based on deeper fields)
+        // Check if profile is incomplete
         const missing =
-          !userData.dob ||
-          !userData.education ||
-          !userData.experience ||
-          !userData.profession ||
-          !userData.website ||
-          !userData.gender ||
-          !userData.resumes ||
-          userData.resumes.length === 0 ||
-          !userData.socialLinks ||
-          Object.values(userData.socialLinks).every((link) => !link);
-
+          !userData?.dob ||
+          !userData?.gender ||
+          !userData?.education ||
+          !userData?.experience ||
+          !userData?.resumes ||
+          userData?.resumes.length === 0 ||
+          !userData?.website ||
+          !userData?.bio ||
+          !userData?.socialLinks ||
+          userData?.socialLinks.length === 0 ||
+          !userData?.profileImage;
         setIsProfileIncomplete(missing);
 
-        // 🧩 Fetch other data
-        const [appliedRes, favoritesRes, alertsRes] = await Promise.all([
-          axios.get(`${BASE_URL}/user/jobs/applied/count`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get(`${BASE_URL}/user/jobs/favorites`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get(`${BASE_URL}/user/job-alerts`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
+        // Fetch applied jobs count
+        const appliedRes = await axios.get(
+          `${BASE_URL}/user/jobs/applied/count`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setAppliedCount(
+          appliedRes.data && typeof appliedRes.data.count === "number"
+            ? appliedRes.data.count
+            : 0
+        );
 
-        setAppliedCount(appliedRes.data.count || 0);
-        setFavoriteJobs(favoritesRes.data || []);
-        setJobAlerts(alertsRes.data || []);
-      } catch (err) {
-        console.error("Error fetching dashboard data:", err);
+        // Fetch favorite jobs
+        const favoritesRes = await axios.get(
+          `${BASE_URL}/user/jobs/favorites`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setFavoriteJobs(
+          Array.isArray(favoritesRes.data) ? favoritesRes.data : []
+        );
+
+        // Fetch job alerts (matching jobs)
+        const alertsRes = await axios.get(`${BASE_URL}/job-alert/matches`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setJobAlerts(
+          Array.isArray(alertsRes.data.jobs) ? alertsRes.data.jobs : []
+        );
+      } catch (error) {
+        console.error("❌ Error fetching user dashboard data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchDashboardData();
+    fetchData();
   }, []);
 
   const chartData = [
@@ -128,16 +138,16 @@ const UserDashboard = () => {
   ];
 
   return (
-    <div className="w-full bg-[#f9f9ff] min-h-screen md:px-6 px-2 p-6 font-outfit">
+    <div className="w-full mb-10 bg-[#f9f9ff] min-h-screen md:px-6 px-2 p-6 font-outfit">
       {/* ===== Header ===== */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex md:flex-row flex-col gap-2 justify-between md:items-center items-start mb-8">
         <h1 className="md:text-2xl text-lg whitespace-nowrap font-semibold text-gray-800">
           Overview
         </h1>
         <input
           type="text"
           placeholder="Search jobs or alerts..."
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0867bc]"
+          className="px-4 py-2 border border-gray-300 outline-none rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0867bc]"
         />
       </div>
 
@@ -159,42 +169,44 @@ const UserDashboard = () => {
         ))}
       </div>
 
-      {/* ===== Profile Incomplete Banner ===== */}
-
       {isProfileIncomplete && (
         <div className="flex flex-col md:flex-row items-center justify-between bg-red-500 text-white rounded-xl p-5 mb-8 shadow-md">
-          <div className="flex items-center gap-4">
+          <div className="flex md:flex-row flex-col md:items-center items-start gap-4 w-full">
             <img
-              src={
-                user?.profileImage || "https://via.placeholder.com/60?text=👤"
-              }
+              src={user?.profileImage || "/default-avatar.png"}
               alt="Profile"
               className="w-14 h-14 rounded-full object-cover border-2 border-white"
             />
-            <div>
-              <h2 className="font-semibold text-lg">
-                Your profile editing is not completed.
-              </h2>
-              <p className="text-sm opacity-90">
-                Complete your profile & build your custom resume to get better
-                job matches.
-              </p>
+
+            {/* Content and button wrapper */}
+            <div className="flex flex-col md:flex-row justify-between w-full items-start md:items-center gap-4">
+              <div>
+                <h2 className="font-semibold md:text-lg text-base">
+                  Your profile editing is not completed.
+                </h2>
+                <p className="md:text-sm text-xs opacity-90">
+                  Complete your profile & build your custom resume to get better
+                  job matches.
+                </p>
+              </div>
+
+              <button
+                onClick={() =>
+                  (window.location.href = "/dashboard/user-settings")
+                }
+                className="bg-white text-red-600 md:px-6 py-2 px-4 rounded-lg md:text-base text-sm font-medium hover:bg-gray-100 transition self-end md:self-auto md:ml-auto"
+              >
+                Edit Profile →
+              </button>
             </div>
           </div>
-
-          <button
-            onClick={() => (window.location.href = "/user/settings")}
-            className="mt-4 md:mt-0 bg-white text-red-600 px-6 py-2 rounded-lg font-medium hover:bg-gray-100 transition"
-          >
-            Edit Profile →
-          </button>
         </div>
       )}
 
       {/* ===== Chart + Recommendations ===== */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Chart Section */}
-        <div className="col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div className="col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 px-2 py-4">
           <h3 className="font-semibold mb-4 text-gray-700 flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-[#0867bc]" />
             Application Progress

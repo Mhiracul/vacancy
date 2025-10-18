@@ -3,6 +3,7 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import BASE_URL from "../config";
 
 const ManageJobs = () => {
   const navigate = useNavigate();

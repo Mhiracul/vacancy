@@ -445,7 +445,7 @@ const RecruiterAccountSetup = () => {
         </div>
 
         <footer className="mt-10 text-gray-400 text-xs">
-          © 2025 Jobpilot - Job Board. All rights reserved.
+          © 2025 VacancyNG - Job Board. All rights reserved.
         </footer>
       </div>
     </>

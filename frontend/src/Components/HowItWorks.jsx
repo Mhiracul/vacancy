@@ -5,36 +5,36 @@ const HowItWorks = () => {
   const steps = [
     {
       id: 1,
-      title: "Register an account to start",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.",
+      title: "Create Your Account",
+      desc: "Sign up and set up your profile with your skills, experience, and career interests.",
     },
     {
       id: 2,
-      title: "Explore over thousands of resumes",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.",
+      title: "Search for Your Dream Job",
+      desc: "Browse through thousands of job opportunities that match your profile and preferences.",
     },
     {
       id: 3,
-      title: "Find the most suitable candidate",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.",
+      title: "Apply and Get Hired",
+      desc: "Submit your applications, connect with recruiters, and land the job that fits you best.",
     },
   ];
 
   return (
-    <section className="relative font-outfit  bg-[#FFF] py-20 overflow-hidden">
+    <section className="relative font-outfit bg-[#FFF] py-20 overflow-hidden">
       {/* Header */}
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-semibold text-[#0A0A0A]">
           How It Works
         </h2>
         <p className="text-gray-500 mt-3 max-w-xl mx-auto">
-          Just via some simple steps, you will find your ideal candidates you’re
-          looking for!
+          Follow these simple steps to find the perfect job and start your
+          career journey with us.
         </p>
       </div>
 
       {/* Steps Section */}
-      <div className="relative container  mx-auto px-4 2xl:px-20 flex flex-col md:flex-row items-center justify-between gap-12 md:gap-0">
+      <div className="relative container mx-auto px-4 2xl:px-20 flex flex-col md:flex-row items-center justify-between gap-12 md:gap-0">
         {/* dotted connector 1 → 2 */}
         <img
           src={DottedLine}
@@ -64,7 +64,7 @@ const HowItWorks = () => {
 
             {step.id === 2 && (
               <button className="mt-6 bg-[#0867bc] text-white px-5 py-2 rounded-md hover:bg-[#065a9c] transition">
-                Get Started
+                Start Searching
               </button>
             )}
           </div>

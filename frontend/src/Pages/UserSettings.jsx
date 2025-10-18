@@ -200,7 +200,7 @@ const UserSettings = () => {
   };
 
   return (
-    <div className="bg-white shadow-sm rounded-xl md:px-6 py-5 px-3">
+    <div className="bg-white shadow-sm mb-10 rounded-xl md:px-6 py-5 px-3">
       <h2 className="text-2xl font-semibold mb-6 text-gray-800">Setting</h2>
 
       {/* Tabs */}

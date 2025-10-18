@@ -20,7 +20,7 @@ const FineSelect = ({ label, options = [], value, onChange, placeholder }) => {
       )}
       <Listbox value={value} onChange={onChange}>
         <div className="relative">
-          <Listbox.Button className="relative w-full border border-gray-300 rounded-md py-2 pl-4 pr-10 text-left text-sm bg-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <Listbox.Button className="relative w-full  rounded-md py-2 pl-4 pr-10 text-left text-sm bg-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500">
             <span
               className={`block truncate ${
                 !selectedOption.value ? "text-gray-400" : "text-gray-700"
@@ -39,7 +39,7 @@ const FineSelect = ({ label, options = [], value, onChange, placeholder }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-sm ring-1 ring-black ring-opacity-5 overflow-auto z-10">
+            <Listbox.Options className="absolute mt-1 w-full bg-white outline-none shadow-lg max-h-60 rounded-md py-1 text-sm ring-1 ring-black ring-opacity-5 overflow-auto z-10">
               {normalizedOptions.length > 0 ? (
                 normalizedOptions.map((option, idx) => (
                   <Listbox.Option

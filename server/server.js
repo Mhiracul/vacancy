@@ -10,32 +10,21 @@ const jobRoutes = require("./routes/jobRoutes");
 const userRoutes = require("./routes/userRoutes");
 const userPaymentRoutes = require("./routes/userPaymentRoutes");
 const candidateRoutes = require("./routes/candidateRoutes");
+const jobAlertRoutes = require("./routes/jobAlertRoutes");
 
 const app = express();
 
 // ✅ Allowed origins for CORS
 const allowedOrigins = [
-  "http://localhost:5173", // Local development
-  "https://vacancy-xi.vercel.app/", // Production domain
-  "https://www.assuchglobal.com", // With www
-  "https://app.assuchglobal.com", // Render / subdomain
+  "http://localhost:5173", // your frontend
 ];
 
-// ✅ Enable CORS before routes
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      } else {
-        return callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: allowedOrigins,
     credentials: true,
   })
 );
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -50,6 +39,7 @@ app.use("/api/user/jobs", jobRoutes);
 app.use("/api/user/payment", userPaymentRoutes);
 app.use("/api/candidates", candidateRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/job-alert", jobAlertRoutes);
 
 // ✅ Start server only after DB connects
 async function startServer() {

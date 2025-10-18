@@ -45,7 +45,7 @@ function Header() {
       localStorage.removeItem("token");
       setUser(null);
       toast.success("Logged out successfully!");
-      navigate("/"); // redirect to homepage
+      navigate("/home"); // redirect to homepage
     }
   };
 
@@ -70,7 +70,7 @@ function Header() {
     <header className="py-4 shadow text-[#4b5563] font-outfit bg-white relative z-50">
       <div className="container px-4 2xl:px-20 mx-auto flex justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/home" className="flex items-center gap-2">
           <img src={Logo} alt="logo" className="cursor-pointer h-10 md:h-12" />
           <h1 className="font-extrabold text-xl md:text-2xl text-[#0867bc]">
             Vacancy.NG

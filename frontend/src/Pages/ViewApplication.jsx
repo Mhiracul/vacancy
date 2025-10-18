@@ -144,6 +144,10 @@ const ViewApplication = () => {
         </p>
       ) : (
         <div className="">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-3">
+            Applications
+          </h2>
+
           <table className="w-full bg-white max-h-screen  border border-[#e2e2e2] max-sm:text-sm">
             <thead>
               <tr className="border-b border-[#e2e2e2]">
@@ -166,9 +170,9 @@ const ViewApplication = () => {
                     <img
                       className="h-10 w-10 rounded-full mr-3 max-sm:hidden"
                       src={app.user.profileImage || "/default-avatar.png"}
-                      alt={app.user.name}
+                      alt={app.user.firstName}
                     />
-                    <span className="md:text-sm text-xs">{app.user.name}</span>
+                    <span className="text-sm">{app.user.firstName}</span>
                   </td>
                   <td className="py-2 text-sm px-4 border-b border-[#e2e2e2] text-start max-lg:hidden">
                     {app.job.title}
@@ -176,7 +180,7 @@ const ViewApplication = () => {
                   <td className="py-2 px-4 text-sm border-b border-[#e2e2e2] text-start max-lg:hidden">
                     {app.job.location}
                   </td>
-                  <td className="py-2 px-4 text-sm border-b border-[#e2e2e2] text-start">
+                  <td className="py-2 px-4 text-sm text-start">
                     <button
                       onClick={() => handleDownloadResume(app.resume)}
                       className="bg-blue-50 text-blue-400 px-3 py-1 rounded inline-flex gap-2 items-center"
@@ -231,289 +235,185 @@ const ViewApplication = () => {
         </div>
       )}
       {isModalOpen && selectedApp && (
-        <div className="fixed inset-0 bg-black/80  flex items-center justify-center z-50 px-4">
-          <div className="bg-white  w-full max-w-6xl shadow-2xl relative overflow-hidden max-h-full">
-            {/* close */}
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-3 sm:px-4">
+          <div className="bg-white w-full max-w-5xl rounded-lg shadow-2xl relative overflow-hidden max-h-[90vh] flex flex-col">
+            {/* Close button */}
             <button
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-lg leading-none"
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-lg leading-none z-10"
               onClick={() => setIsModalOpen(false)}
             >
               ✕
             </button>
 
-            {/* --- Header --- */}
-            <div className="flex items-center gap-6 border-b border-gray-300 px-8 py-6">
-              <img
-                src={selectedApp.user.profileImage || "/default-avatar.png"}
-                alt={selectedApp.user.name}
-                className="w-20 h-20 rounded-full object-cover "
-              />
+            {/* Scrollable content */}
+            <div className="overflow-y-auto p-5 sm:p-8">
+              {/* --- Header --- */}
+              <div className="flex flex-col md:flex-row md:items-center items-start gap-6 border-b border-gray-200 pb-5 mb-5">
+                <img
+                  src={selectedApp.user.profileImage || "/default-avatar.png"}
+                  alt={selectedApp.user.name}
+                  className="w-20 h-20 rounded-full object-cover"
+                />
 
-              <div className="flex-1">
-                <h2 className="text-2xl font-medium text-gray-800">
-                  {`${selectedApp.user.firstName || ""} ${
-                    selectedApp.user.lastName || ""
-                  }`}
-                </h2>
-                <p className="text-sm text-gray-500">
-                  {selectedApp.user.profession || "Website Designer (UI/UX)"}
-                </p>
+                <div className="flex-1">
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
+                    {`${selectedApp.user.firstName || ""} ${
+                      selectedApp.user.lastName || ""
+                    }`}
+                  </h2>
+                  <p className="text-sm text-gray-500">
+                    {selectedApp.user.profession || "Website Designer (UI/UX)"}
+                  </p>
 
-                {/* small info cards row */}
-                <div className="mt-3 flex flex-wrap gap-3">
-                  <div className="flex items-center gap-2 text-sm text-gray-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded">
-                    <Calendar size={14} color="#0867bc" />
-                    <span>
-                      {new Date(selectedApp.user.dob).toLocaleDateString(
-                        "en-GB",
-                        {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        }
-                      )}
-                    </span>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded">
+                      <Calendar size={14} color="#0867bc" />
+                      <span>
+                        {new Date(selectedApp.user.dob).toLocaleDateString(
+                          "en-GB",
+                          {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          }
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded">
+                      <Globe size={14} color="#0867bc" />
+                      <span>{selectedApp.nationality || "Nigeria"}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded">
+                      <Users size={14} color="#0867bc" />
+                      <span>{selectedApp.maritalStatus || "Single"}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded">
+                      <User size={14} color="#0867bc" />
+                      <span>{selectedApp.user.gender || "Male"}</span>
+                    </div>
                   </div>
+                </div>
 
-                  <div className="flex items-center gap-2 text-sm text-gray-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded">
-                    <Globe size={14} color="#0867bc" />
-                    <span>{selectedApp.nationality || "Bangladesh"}</span>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-sm text-gray-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded">
-                    <Users size={14} color="#0867bc" />
-                    <span>{selectedApp.maritalStatus || "Single"}</span>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-sm text-gray-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded">
-                    <User size={14} color="#0867bc" />
-                    <span>{selectedApp.user.gender || "Male"}</span>
-                  </div>
+                {/* Action buttons */}
+                <div className="flex items-center gap-2 sm:gap-3 mt-3 md:mt-0">
+                  <a
+                    href={`mailto:${selectedApp.user.email}`}
+                    className="flex items-center gap-2 border border-blue-200 text-blue-600 px-3 py-2 rounded-md hover:bg-blue-50 text-xs sm:text-sm font-medium"
+                  >
+                    <Mail size={16} /> Mail
+                  </a>
+                  <button className="flex items-center gap-2 bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700 text-xs sm:text-sm font-medium">
+                    Hire
+                  </button>
                 </div>
               </div>
 
-              {/* action buttons */}
-              <div className="flex items-center gap-3">
-                <a
-                  href={`mailto:${selectedApp.user.email}`}
-                  className="flex items-center gap-2 border border-blue-200 text-blue-600 px-4 py-2 rounded-md hover:bg-blue-50 text-sm font-medium"
-                >
-                  <Mail size={16} /> Send Mail
-                </a>
-
-                <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm font-medium">
-                  Hire Candidate
-                </button>
-              </div>
-            </div>
-
-            {/* --- Body --- */}
-            <div className="grid grid-cols-3 gap-8 px-8 py-6">
-              {/* Left (content) - spans 2 columns */}
-              <div className="col-span-2 overflow-y-auto max-h-full pr-4">
-                {/* Biography */}
-                <section className="mb-8">
-                  <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-800 mb-3">
-                    Biography
-                  </h3>
-                  <p className="text-sm text-gray-700 leading-relaxed">
-                    {selectedApp.user.bio ||
-                      "I've been passionate about graphic design and digital art from an early age with a keen interest in Website and Mobile Application User Interfaces. I can create high-quality and aesthetically pleasing designs in a quick turnaround time..."}
-                  </p>
-                </section>
-
-                {/* Cover Letter */}
-                <section className="mb-8">
-                  <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-800 mb-3">
-                    Cover Letter
-                  </h3>
-                  <div className="bg-gray-50  rounded p-4 text-sm text-gray-700 leading-relaxed">
-                    {selectedApp.coverLetter ? (
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: selectedApp.coverLetter,
-                        }}
-                      />
-                    ) : (
-                      <p>No cover letter available.</p>
-                    )}
-                  </div>
-                </section>
-
-                {/* Resume quick link */}
-                {/* Resume quick link */}
-                <section className="mb-6">
-                  <h3 className="text-sm font-medium capitalize tracking-wide text-gray-800 mb-3">
-                    Resume (Applied)
-                  </h3>
-                  {selectedApp.resume ? (
-                    <a
-                      className="bg-blue-50 text-black px-3 text-sm py-1 rounded inline-flex gap-2 items-center"
-                      href={selectedApp.resume}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View Resume <Download size={16} color="#0867bc" />
-                    </a>
-                  ) : (
-                    <p className="text-gray-500 text-sm">
-                      No resume uploaded for this application.
+              {/* --- Body --- */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Left side */}
+                <div className="md:col-span-2 space-y-6">
+                  <section>
+                    <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-800 mb-2">
+                      Biography
+                    </h3>
+                    <p className="text-sm text-gray-700 leading-relaxed">
+                      {selectedApp.user.bio ||
+                        "I've been passionate about UI/UX design and web development for years. I create clean, user-friendly interfaces that help brands stand out."}
                     </p>
-                  )}
-                </section>
-              </div>
+                  </section>
 
-              {/* Right sidebar */}
-              <aside className="space-y-6">
-                {/* small stats grid (Experience + Education) */}
-                <div className="grid grid-cols-1 gap-4">
-                  <div className="bg-white border border-gray-300 rounded-lg p-4">
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="flex flex-col items-center gap-3">
-                        <Briefcase size={24} color="#0867bc" />
-
-                        <div className="text-center">
-                          <div className="text-xs text-gray-500">
-                            Experience
-                          </div>
-                          <div className="font-medium text-gray-800 text-sm">
-                            {selectedApp.user.experience
-                              ? `${selectedApp.user.experience} Years`
-                              : "7 Years"}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col items-center gap-3">
-                        <BookOpen size={24} color="#0867bc" />
-
-                        <div className="text-center">
-                          <div className="text-xs text-gray-500">
-                            Educations
-                          </div>
-                          <div className="font-medium text-gray-800 text-sm">
-                            {selectedApp.user.education || "Master Degree"}
-                          </div>
-                        </div>
-                      </div>
+                  <section>
+                    <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-800 mb-2">
+                      Cover Letter
+                    </h3>
+                    <div className="bg-gray-50 rounded p-4 text-sm text-gray-700 leading-relaxed">
+                      {selectedApp.coverLetter ? (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: selectedApp.coverLetter,
+                          }}
+                        />
+                      ) : (
+                        <p>No cover letter available.</p>
+                      )}
                     </div>
-                  </div>
+                  </section>
 
-                  {/* Download My Resume card */}
-                  <div className="bg-white border border-gray-300 rounded-lg p-4">
-                    <h4 className="font-medium text-sm text-gray-800 mb-3 capitalize">
-                      Download My Resume
-                    </h4>
-
+                  <section>
+                    <h3 className="text-sm font-medium tracking-wide text-gray-800 mb-2">
+                      Resume
+                    </h3>
                     {selectedApp.resume ? (
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-3">
-                          <FileText
-                            strokeWidth={0.8}
-                            size={44}
-                            color="#d1d5dc"
-                          />
-                          <div className="text-sm">
-                            <div className="font-medium text-gray-800">
-                              {selectedApp.resumeName || "Resume.pdf"}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                              {selectedApp.resumeSize || "Unknown Size"}
-                            </div>
-                          </div>
-                        </div>
-
-                        <a
-                          href={selectedApp.resume}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 border border-blue-100 bg-blue-50 text-blue-600 px-3 py-2 rounded hover:bg-blue-100"
-                        >
-                          <Download size={18} />
-                        </a>
-                      </div>
+                      <a
+                        className="bg-blue-50 text-blue-600 px-3 py-1 rounded inline-flex gap-2 items-center"
+                        href={selectedApp.resume}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View Resume <Download size={16} color="#0867bc" />
+                      </a>
                     ) : (
                       <p className="text-gray-500 text-sm">
-                        No resume attached to this application.
+                        No resume uploaded for this application.
                       </p>
                     )}
-                  </div>
-
-                  {/* Contact Information */}
-                  <div className="bg-white border-gray-300 border rounded-lg p-4">
-                    <h4 className="font-medium text-sm text-gray-800 mb-3 capitalize">
-                      Contact Information
-                    </h4>
-                    <div className="space-y-3 text-sm text-gray-700">
-                      <div className="flex items-start gap-3">
-                        <Globe size={20} className="mt-1" color="#0867bc" />
-                        <div>
-                          <div className="text-xs text-gray-500">Website</div>
-                          <div className="font-medium text-gray-800">
-                            {selectedApp.user.website || "www.estherhoward.com"}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <MapPin size={20} className="mt-1" color="#0867bc" />
-                        <div>
-                          <div className="text-xs text-gray-500">Location</div>
-                          <div className="font-medium text-gray-800 text-sm">
-                            {selectedApp.user.location ||
-                              "Beverly Hills, California 90202"}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <User size={20} className="mt-1" color="#0867bc" />
-                        <div>
-                          <div className="text-xs text-gray-500">Phone</div>
-                          <div className="font-medium text-gray-800">
-                            {selectedApp.user.phone || "+1-202-555-0141"}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <Mail size={20} className="mt-1" color="#0867bc" />
-                        <div>
-                          <div className="text-xs text-gray-500">Email</div>
-                          <div className="font-medium text-gray-800 text-sm">
-                            {selectedApp.user.email ||
-                              "esther.howard@gmail.com"}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Social icons */}
-                  <div className="bg-white border border-gray-300 rounded-lg p-4">
-                    <h4 className="font-semibold text-sm text-gray-800 mb-3 uppercase">
-                      Follow me Social Media
-                    </h4>
-                    <div className="flex items-center gap-3">
-                      {[
-                        { name: "facebook", icon: <BsFacebook /> },
-                        { name: "twitter", icon: <BsTwitter /> },
-                        { name: "linkedin", icon: <BsLinkedin /> },
-                        { name: "instagram", icon: <BsInstagram /> },
-                        { name: "youtube", icon: <BsYoutube /> },
-                      ].map((s) => (
-                        <button
-                          key={s.name}
-                          className="w-9 h-9 flex items-center justify-center rounded bg-blue-50   hover:bg-blue-100 text-[#0867bc]"
-                          aria-label={s.name}
-                        >
-                          {s.icon}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                  </section>
                 </div>
-              </aside>
+
+                {/* Right sidebar */}
+                <aside className="space-y-6">
+                  <div className="bg-white border border-gray-300 rounded-lg p-4 text-sm">
+                    <div className="grid grid-cols-2 gap-3 text-center">
+                      <div>
+                        <Briefcase
+                          size={22}
+                          color="#0867bc"
+                          className="mx-auto"
+                        />
+                        <p className="text-gray-500 text-xs mt-1">Experience</p>
+                        <p className="font-medium">
+                          {selectedApp.user.experience || "3 Years"}
+                        </p>
+                      </div>
+                      <div>
+                        <BookOpen
+                          size={22}
+                          color="#0867bc"
+                          className="mx-auto"
+                        />
+                        <p className="text-gray-500 text-xs mt-1">Education</p>
+                        <p className="font-medium">
+                          {selectedApp.user.education || "B.Sc. Degree"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white border border-gray-300 rounded-lg p-4">
+                    <h4 className="font-medium text-sm text-gray-800 mb-2">
+                      Contact Info
+                    </h4>
+                    <div className="space-y-2 text-sm text-gray-700">
+                      <div className="flex items-center gap-2">
+                        <Mail size={16} color="#0867bc" />
+                        <span>{selectedApp.user.email}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <User size={16} color="#0867bc" />
+                        <span>
+                          {selectedApp.user.phone || "+234 802 000 1111"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin size={16} color="#0867bc" />
+                        <span>
+                          {selectedApp.user.location || "Lagos, Nigeria"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </aside>
+              </div>
             </div>
           </div>
         </div>

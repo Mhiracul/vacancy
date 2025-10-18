@@ -18,13 +18,15 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import BASE_URL from "../config";
+import FineSelect from "../context/FineSelect";
 
 const RecruiterLogin = () => {
-  const [state, setState] = useState("Login");
   const [showPassword, setShowPassword] = useState(false);
   const { setUser } = useContext(JobsContext);
   const [loading, setLoading] = useState(false); // ⬅️ Added loading state
   const location = useLocation();
+  const initialMode = location.state?.mode === "signup" ? "Sign Up" : "Login";
+  const [state, setState] = useState(initialMode);
   const isNewUser = location.state?.isNewUser || false;
   const prefilledEmail = location.state?.email || "";
   const navigate = useNavigate();
@@ -143,14 +145,14 @@ const RecruiterLogin = () => {
   };
 
   return (
-    <div className="absolute font-outfit top-0 left-0 right-0 bottom-0 z-[99999] flex justify-center items-center backdrop-blur-sm bg-black/10 ">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 font-outfit py-10">
       {loading && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex flex-col items-center justify-center z-[999999]">
+        <div className="fixed inset-0 bg-black/40 flex flex-col items-center justify-center z-[999999]">
           <Loader2 className="w-12 h-12 text-white animate-spin" />
           <p className="text-white mt-3 text-sm">Please wait...</p>
         </div>
       )}
-      <div className="fixed inset-0 z-[99999] bg-black/10 backdrop-blur-sm flex justify-center items-center md:relative md:min-h-screen md:overflow-auto">
+      <div className="bg-white rounded-xl w-full max-w-5xl shadow-lg flex flex-col md:flex-row overflow-hidden">
         <div className="relative bg-gray-100 rounded-xl w-full flex flex-col md:flex-row h-auto md:h-auto max-h-screen overflow-y-auto">
           {/* Left: Form */}
           <div className="w-full container mx-auto px-10 md:w-1/2 mt-10 p-8">
@@ -308,16 +310,54 @@ const RecruiterLogin = () => {
                   </div>
                 </div>
 
-                <div className="px-4 py-4 bg-white flex items-center gap-2 rounded-md mt-3">
-                  <input
-                    type="text"
-                    placeholder="Position in Company"
-                    required
+                <div className="mt-3">
+                  <FineSelect
+                    placeholder="Position in company"
                     value={repData.position}
-                    onChange={(e) =>
-                      setRepData({ ...repData, position: e.target.value })
+                    onChange={(value) =>
+                      setRepData({ ...repData, position: value })
                     }
-                    className="outline-none text-sm w-full"
+                    options={[
+                      {
+                        label: "C-level",
+                        value: "C-level",
+                        children: [
+                          { label: "CEO", value: "CEO" },
+                          { label: "COO", value: "COO" },
+                          { label: "CIO", value: "CIO" },
+                          { label: "CFO", value: "CFO" },
+                          { label: "CTO", value: "CTO" },
+                          { label: "CPO", value: "CPO" },
+                        ],
+                      },
+                      {
+                        label: "Senior Management",
+                        value: "Senior Management",
+                        children: [
+                          {
+                            label: "Head of Department",
+                            value: "Head of Department",
+                          },
+                          { label: "Team Lead", value: "Team Lead" },
+                        ],
+                      },
+                      {
+                        label: "Middle Management",
+                        value: "Middle Management",
+                        children: [
+                          { label: "Supervisor", value: "Supervisor" },
+                          { label: "Unit Head", value: "Unit Head" },
+                        ],
+                      },
+                      {
+                        label: "Junior Level",
+                        value: "Junior Level",
+                        children: [
+                          { label: "Associate", value: "Associate" },
+                          { label: "Officer", value: "Officer" },
+                        ],
+                      },
+                    ]}
                   />
                 </div>
 

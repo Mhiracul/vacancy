@@ -1,10 +1,9 @@
 // src/layouts/Dashboard.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Logo from "../assets/Logoo.svg";
-import Logout from "../assets/logout.svg";
 import Google from "../assets/googlelogo.png";
 import {
   BriefcaseBusiness,
@@ -14,23 +13,25 @@ import {
   LogOut,
   LayoutDashboard,
 } from "lucide-react";
+import { JobsContext } from "../context/jobContext"; // <-- import context
+import BASE_URL from "../config";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { user, setUser } = useContext(JobsContext); // <-- use context for user
   const [role, setRole] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
       const parsedUser = JSON.parse(userData);
-      setUser(parsedUser);
+      setUser(parsedUser); // update context
       setRole(parsedUser.role || "user"); // safely set role
     } else {
       navigate("/login");
     }
-  }, [navigate]);
+  }, [navigate, setUser]);
+
   const menuItems = {
     recruiter: [
       { label: "Dashboard", path: "/dashboard", icon: "/src/assets/Fill.svg" },
@@ -59,31 +60,27 @@ const Dashboard = () => {
       {
         label: "Dashboard",
         path: "/dashboard",
-        icon: (
-          <LayoutDashboard strokeWidth={2} className="w-10 h-10" size={26} />
-        ),
+        icon: <LayoutDashboard strokeWidth={2} className="w-6 h-6" />,
       },
       {
         label: "Jobs Alert",
         path: "/dashboard/jobs-for-you",
-        icon: <BellRing strokeWidth={2} className="w-10 h-10" size={26} />,
+        icon: <BellRing strokeWidth={2} className="w-6 h-6" />,
       },
       {
         label: "Applied Jobs",
         path: "/dashboard/applied-jobs",
-        icon: (
-          <BriefcaseBusiness strokeWidth={2} className="w-10 h-10" size={26} />
-        ),
+        icon: <BriefcaseBusiness strokeWidth={2} className="w-6 h-6" />,
       },
       {
         label: "Favorite Jobs",
         path: "/dashboard/favorite-jobs",
-        icon: <Bookmark strokeWidth={2} className="w-10 h-10" size={26} />,
+        icon: <Bookmark strokeWidth={2} className="w-6 h-6" />,
       },
       {
         label: "Settings",
         path: "/dashboard/user-settings",
-        icon: <Settings strokeWidth={2} className="w-10 h-10" size={26} />,
+        icon: <Settings strokeWidth={2} className="w-6 h-6" />,
       },
     ],
     admin: [
@@ -108,47 +105,46 @@ const Dashboard = () => {
 
   const links = menuItems[role] || [];
 
-  // Fully functional logout
   const handleLogout = async () => {
     const token = localStorage.getItem("token");
 
     try {
-      // Call backend logout API
       await axios.post(
-        "http://localhost:5000/api/auth/logout",
+        `${BASE_URL}/auth/logout`,
         {},
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
     } catch (err) {
-      console.warn("Backend logout failed:", err.response?.data || err.message);
+      console.warn(err);
     } finally {
-      // Clear local storage
       localStorage.removeItem("user");
       localStorage.removeItem("token");
-
-      // Show toast and redirect to home
+      setUser(null); // update context so Header syncs
       toast.success("Logged out successfully!");
-      setTimeout(() => navigate("/"), 500);
+      navigate("/home");
     }
   };
 
   return (
     <div className="min-h-screen font-outfit bg-[#f9f9ff]">
       <Toaster position="top-right" />
+
       {/* Navbar */}
       <div className="shadow py-4 bg-white">
-        <div className="px-5 flex justify-between items-center">
+        <div className="px-4 flex justify-between items-center">
           <img
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
             src={Logo}
             alt="Logo"
-            className="w-32 h-10 cursor-pointer"
+            className="h-16 cursor-pointer"
           />
           <div className="flex items-center gap-3">
             <p className="max-sm:hidden capitalize">{user?.firstName}</p>
             <div className="relative group">
               <img
-                src={user?.profileImage || Google} // fallback to Google logo
+                src={user?.profileImage || Google}
                 alt="Profile"
                 className="w-8 h-8 border border-[#e2e2e2] rounded-full cursor-pointer object-cover"
               />
@@ -169,7 +165,6 @@ const Dashboard = () => {
 
       {/* Layout */}
       <div className="flex flex-col lg:flex-row">
-        {/* Sidebar for large screens */}
         <div className="hidden lg:inline-block min-h-screen border-r-2 border-[#e2e2e2]">
           <ul className="flex flex-col gap-6 items-start pt-5 text-gray-800">
             {links.map((item) => (
@@ -183,7 +178,7 @@ const Dashboard = () => {
                 }
               >
                 {typeof item.icon === "string" ? (
-                  <img src={item.icon} alt="" className="w-10" />
+                  <img src={item.icon} alt="" className="w-4" />
                 ) : (
                   item.icon
                 )}
@@ -193,13 +188,11 @@ const Dashboard = () => {
           </ul>
         </div>
 
-        {/* Main Content */}
         <div className="flex-1 p-5">
           <Outlet />
         </div>
       </div>
 
-      {/* Mobile bottom menu */}
       {/* Mobile bottom menu */}
       <div className="fixed bottom-0 left-0 w-full lg:hidden bg-white border-t border-gray-200 shadow-md">
         <ul className="flex justify-around items-center py-2">
@@ -218,8 +211,6 @@ const Dashboard = () => {
               ) : (
                 React.cloneElement(item.icon, { className: "w-6 h-6 mb-1" })
               )}
-
-              {/* Tooltip on hover */}
               <span className="absolute bottom-full mb-2 w-max px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
                 {item.label}
               </span>
@@ -231,8 +222,6 @@ const Dashboard = () => {
             className="relative flex flex-col items-center text-gray-500 hover:text-blue-500 cursor-pointer"
           >
             <LogOut strokeWidth={2} className="w-4 h-4" />
-
-            {/* Tooltip for logout */}
             <span className="absolute bottom-full mb-2 w-max px-2 py-1 rounded bg-gray-800 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
               Logout
             </span>

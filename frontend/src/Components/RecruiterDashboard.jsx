@@ -91,11 +91,11 @@ const RecruiterDashboard = () => {
   ];
 
   return (
-    <div className="w-full bg-[#f9f9ff] min-h-screen p-6">
+    <div className="w-full bg-[#f9f9ff] min-h-screen md:px-6 px-2 p-6">
       {/* ===== Header ===== */}
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold text-gray-800">
-          Recruiter Dashboard Overview
+      <div className="flex md:flex-row flex-col justify-between md:items-center items-start gap-2 mb-8">
+        <h1 className="text-xl font-semibold text-gray-800">
+          Recruiter Dashboard
         </h1>
         <input
           type="text"

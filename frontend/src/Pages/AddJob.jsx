@@ -410,7 +410,7 @@ const AddJob = () => {
       >
         {/* Job Title */}
         <div>
-          <label className="text-gray-700 font-medium mb-2 block">
+          <label className="text-sm text-gray-700 font-outfit  mb-2 block">
             Job Title <span className="text-red-500">*</span>
           </label>
           <input
@@ -419,7 +419,7 @@ const AddJob = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            className="w-full px-4 py-2 border rounded-md border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full px-4 py-2 border rounded-md placeholder:text-sm border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
           />
         </div>
 
@@ -457,7 +457,7 @@ const AddJob = () => {
 
         {/* Salary */}
         <div>
-          <label className="text-gray-700 font-medium mb-2 block">
+          <label className="text-gray-700 font-outfit text-sm  mb-2 block">
             Salary (₦)
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -487,7 +487,7 @@ const AddJob = () => {
         {/* Location + Expiration */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div>
-            <label className="text-gray-700 font-medium mb-2 block">
+            <label className="text-gray-700 text-sm font-outfit mb-2 block">
               Location
             </label>
             <input
@@ -500,7 +500,7 @@ const AddJob = () => {
           </div>
 
           <div>
-            <label className="text-gray-700 font-medium mb-2 block">
+            <label className="text-gray-700 font-outfit text-sm  mb-2 block">
               Expiration Date
             </label>
             <input
@@ -520,7 +520,7 @@ const AddJob = () => {
 
         {/* Job Description */}
         <div>
-          <label className="text-gray-700 font-medium mb-2 block">
+          <label className="text-gray-700 font-outfit text-sm mb-2 block">
             Job Description
           </label>
           <ReactQuill

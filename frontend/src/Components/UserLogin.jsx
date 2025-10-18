@@ -11,7 +11,9 @@ import Swal from "sweetalert2";
 import BASE_URL from "../config";
 
 const UserLoginPage = () => {
-  const [state, setState] = useState("Login");
+  const location = useLocation();
+  const initialMode = location.state?.mode === "signup" ? "Sign Up" : "Login";
+  const [state, setState] = useState(initialMode);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(
@@ -19,7 +21,6 @@ const UserLoginPage = () => {
   );
   const { setUser } = useContext(JobsContext);
   const navigate = useNavigate();
-  const location = useLocation();
   const prefilledEmail = location.state?.email || "";
 
   const [formData, setFormData] = useState({

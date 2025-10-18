@@ -26,7 +26,7 @@ const AppliedJobs = () => {
   }, []);
 
   return (
-    <div className="w-full md:p-6 p-2 font-outfit">
+    <div className="w-full md:p-6 p-2 mb-10 font-outfit">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-semibold text-gray-800">
@@ -90,10 +90,7 @@ const AppliedJobs = () => {
                       <div className="flex items-center gap-3">
                         <div className="w-10 max-sm:hidden h-10 rounded-lg flex items-center justify-center bg-gray-100">
                           <img
-                            src={
-                              company.logo ||
-                              "https://via.placeholder.com/80x80?text=Logo"
-                            }
+                            src={company.logo}
                             alt={company.name || "Company Logo"}
                             className="w-8 h-8 object-contain rounded"
                           />
@@ -198,10 +195,7 @@ const AppliedJobs = () => {
             {/* Banner */}
             <div className="relative h-40 bg-gray-100 rounded-t-lg">
               <img
-                src={
-                  selectedJob.recruiter?.company.banner ||
-                  "https://via.placeholder.com/800x200"
-                }
+                src={selectedJob.recruiter?.company.banner}
                 alt="Company Banner"
                 className="w-full h-full object-cover rounded-t-lg"
               />
